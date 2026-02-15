@@ -15,9 +15,11 @@
     <meta name="twitter:card" content="summary_large_image">
     <title>NotWiki — Parodi Bilgi Platformu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Linux+Libertine:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         *,
         *::before,
@@ -29,56 +31,65 @@
 
         :root {
             --bg: #ffffff;
-            --bg-secondary: #f6f6f6;
+            --bg-secondary: #f4f6f8;
             --bg-card: #ffffff;
-            --bg-card-hover: #fafafa;
+            --bg-card-hover: #fcfcfc;
             --bg-input: #ffffff;
-            --bg-header: #ffffff;
-            --border: #a7d7f9;
-            --border-light: #e0e0e0;
-            --border-card: #a7d7f9;
-            --text: #202122;
-            --text-secondary: #54595d;
-            --text-muted: #72777d;
-            --link: #0645ad;
-            --link-hover: #0b0080;
-            --accent: #3366cc;
-            --accent-hover: #2a4b8d;
-            --success: #14866d;
-            --warning: #ac6600;
-            --danger: #d33;
-            --danger-hover: #b32424;
-            --highlight: #fee7a8;
-            --radius: 2px;
-            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            --transition: all 0.15s ease;
-            --font-serif: 'Linux Libertine', 'Georgia', 'Times', serif;
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --bg-header: rgba(255, 255, 255, 0.85);
+            --border: #e1e4e8;
+            --border-light: #eaecef;
+            --border-card: #d1d5da;
+            --text: #24292e;
+            --text-secondary: #586069;
+            --text-muted: #6a737d;
+            --link: #0969da;
+            --link-hover: #0550ae;
+            --accent: #0969da;
+            --accent-hover: #0550ae;
+            --success: #2da44e;
+            --warning: #bf8700;
+            --danger: #cf222e;
+            --danger-hover: #a40e26;
+            --highlight: #fff8c5;
+            --radius: 8px;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.2s ease;
+            --font-serif: 'Lora', 'Georgia', serif;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --header-height: 60px;
+            --infobox-bg: #f8f9fa;
+            --infobox-header: #f0e68c;
+            --infobox-text: #202122;
         }
 
         [data-theme="dark"] {
-            --bg: #1a1a2e;
-            --bg-secondary: #16213e;
-            --bg-card: #1a1a2e;
-            --bg-card-hover: #1f1f3a;
-            --bg-input: #16213e;
-            --bg-header: #0f0f23;
-            --border: #2a2a5a;
-            --border-light: #2a2a5a;
-            --border-card: #3a3a6a;
-            --text: #e0e0e8;
-            --text-secondary: #a0a0b8;
-            --text-muted: #707088;
-            --link: #8ab4f8;
-            --link-hover: #aecbfa;
-            --accent: #8ab4f8;
-            --accent-hover: #aecbfa;
-            --success: #34d399;
-            --warning: #fbbf24;
-            --danger: #f87171;
-            --danger-hover: #ef4444;
+            --bg: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #0d1117;
+            --bg-card-hover: #161b22;
+            --bg-input: #0d1117;
+            --bg-header: rgba(13, 17, 23, 0.85);
+            --border: #30363d;
+            --border-light: #21262d;
+            --border-card: #30363d;
+            --text: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --link: #58a6ff;
+            --link-hover: #79c0ff;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+            --danger-hover: #ff7b72;
             --highlight: #3a3520;
-            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+            --infobox-bg: #161b22;
+            --infobox-header: #8a7a00;
+            --infobox-text: #c9d1d9;
         }
 
         body {
@@ -86,40 +97,43 @@
             background: var(--bg-secondary);
             color: var(--text);
             line-height: 1.6;
-            font-size: 14px;
+            font-size: 15px;
             min-height: 100vh;
             transition: background 0.3s, color 0.3s;
+            -webkit-font-smoothing: antialiased;
         }
 
         a {
             color: var(--link);
             text-decoration: none;
+            transition: color 0.2s;
         }
 
         a:hover {
-            text-decoration: underline;
             color: var(--link-hover);
+            text-decoration: underline;
         }
 
-        /* HEADER */
         .header {
             background: var(--bg-header);
             border-bottom: 1px solid var(--border-light);
-            box-shadow: var(--shadow);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
             z-index: 100;
+            height: var(--header-height);
         }
 
         .header-inner {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 1rem;
-            height: 56px;
-            gap: 1rem;
+            padding: 0 1.5rem;
+            height: 100%;
+            gap: 1.5rem;
         }
 
         .logo {
@@ -129,60 +143,68 @@
             font-family: var(--font-serif);
             user-select: none;
             flex-shrink: 0;
+            text-decoration: none !important;
+        }
+
+        .logo:hover {
+            text-decoration: none !important;
         }
 
         .logo-not {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--danger);
             text-decoration: line-through;
             text-decoration-thickness: 2px;
-            margin-right: 1px;
+            margin-right: 2px;
             font-style: italic;
         }
 
         .logo-wiki {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 400;
             color: var(--text);
             letter-spacing: -0.5px;
         }
 
         .logo-sub {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
-            margin-left: 6px;
+            margin-left: 8px;
             font-family: var(--font-sans);
             font-style: italic;
+            font-weight: 500;
         }
 
         .header-search {
             flex: 1;
-            max-width: 400px;
+            max-width: 480px;
             position: relative;
         }
 
         .header-search input {
             width: 100%;
-            padding: 6px 32px 6px 10px;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
+            padding: 10px 40px 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
             background: var(--bg-input);
             color: var(--text);
-            font-size: 13px;
+            font-size: 14px;
             font-family: var(--font-sans);
             outline: none;
             transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) inset;
         }
 
         .header-search input:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(51, 102, 204, 0.15);
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
+            background: var(--bg);
         }
 
         .header-search-btn {
             position: absolute;
-            right: 4px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
@@ -191,95 +213,101 @@
             padding: 4px;
             display: flex;
             align-items: center;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .header-search-btn:hover {
+            opacity: 1;
         }
 
         .header-search-btn svg {
-            width: 16px;
-            height: 16px;
-            stroke: var(--text-muted);
+            width: 18px;
+            height: 18px;
+            stroke: var(--text);
             fill: none;
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
-        .header-search-btn:hover svg {
-            stroke: var(--text);
-        }
-
         .nav {
             display: flex;
-            gap: 4px;
+            gap: 8px;
             align-items: center;
             flex-shrink: 0;
         }
 
         .nav-btn {
             background: transparent;
-            border: 1px solid var(--border-light);
-            color: var(--text-secondary);
-            padding: 5px 12px;
+            color: var(--text);
+            padding: 8px 16px;
             border-radius: var(--radius);
             cursor: pointer;
-            font-size: 12.5px;
+            font-size: 14px;
+            font-weight: 500;
             font-family: var(--font-sans);
             transition: var(--transition);
             white-space: nowrap;
+            border: 1px solid transparent;
         }
 
         .nav-btn:hover {
             background: var(--bg-secondary);
-            border-color: var(--accent);
-            color: var(--text);
+            text-decoration: none;
         }
 
         .nav-btn.primary {
             background: var(--accent);
-            border-color: var(--accent);
             color: #fff;
+            border: 1px solid var(--accent);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .nav-btn.primary:hover {
             background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         }
 
         .nav-btn.danger {
             color: var(--danger);
-            border-color: var(--danger);
+            border: 1px solid var(--border-light);
         }
 
         .nav-btn.danger:hover {
             background: var(--danger);
             color: #fff;
+            border-color: var(--danger);
         }
 
         .theme-toggle {
-            background: none;
-            border: 1px solid var(--border-light);
+            background: transparent;
+            border: none;
             cursor: pointer;
-            padding: 5px 7px;
-            border-radius: var(--radius);
+            padding: 8px;
+            border-radius: 50%;
             transition: var(--transition);
             display: flex;
             align-items: center;
-        }
-
-        .theme-toggle svg {
-            width: 18px;
-            height: 18px;
-            stroke: var(--text-muted);
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            justify-content: center;
+            color: var(--text-muted);
         }
 
         .theme-toggle:hover {
             background: var(--bg-secondary);
+            color: var(--text);
         }
 
-        .theme-toggle:hover svg {
-            stroke: var(--text);
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .icon-inline {
@@ -294,88 +322,90 @@
             stroke-linejoin: round;
         }
 
-        /* MAIN LAYOUT */
         .main-wrapper {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem;
-            min-height: calc(100vh - 56px - 180px);
+            padding: 2rem 1.5rem;
+            min-height: calc(100vh - var(--header-height));
         }
 
         .content-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 1.25rem 1.5rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
         }
 
-        /* SECTIONS */
         .section {
             display: none;
         }
 
         .section.active {
             display: block;
-            animation: fadeIn 0.2s ease;
+            animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
+                transform: translateY(5px);
             }
 
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        /* WIKI-STYLE HEADINGS */
         .wiki-heading {
             font-family: var(--font-serif);
-            font-weight: 400;
-            font-size: 1.6rem;
-            border-bottom: 1px solid var(--border-light);
-            padding-bottom: 4px;
-            margin-bottom: 0.75rem;
+            font-weight: 700;
+            font-size: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 1.5rem;
             color: var(--text);
+            letter-spacing: -0.02em;
         }
 
         .wiki-heading-sm {
             font-family: var(--font-serif);
-            font-weight: 400;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.5rem;
             border-bottom: 1px solid var(--border-light);
-            padding-bottom: 2px;
-            margin: 1.25rem 0 0.5rem;
+            padding-bottom: 6px;
+            margin: 2rem 0 1rem;
             color: var(--text);
         }
 
-        /* PERSON CARDS - Wikipedia infobox style */
         .person-list {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 1rem;
         }
 
         .person-card {
             display: flex;
-            gap: 1rem;
-            padding: 0.75rem;
-            border: 1px solid var(--border-light);
+            gap: 1.25rem;
+            padding: 1.25rem;
+            border: 1px solid var(--border);
             border-radius: var(--radius);
             background: var(--bg-card);
             cursor: pointer;
             transition: var(--transition);
+            box-shadow: var(--shadow);
         }
 
         .person-card:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-card);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent);
         }
 
         .person-thumb {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             border-radius: var(--radius);
             object-fit: cover;
             background: var(--bg-secondary);
@@ -384,8 +414,8 @@
         }
 
         .person-thumb-placeholder {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             border-radius: var(--radius);
             background: var(--bg-secondary);
             display: flex;
@@ -394,19 +424,26 @@
             flex-shrink: 0;
             border: 1px solid var(--border-light);
             color: var(--text-muted);
-            font-size: 1.5rem;
+        }
+
+        .person-thumb-placeholder svg {
+            width: 32px;
+            height: 32px;
         }
 
         .person-card-body {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             min-width: 0;
         }
 
         .person-card-name {
             font-weight: 600;
-            font-size: 15px;
+            font-size: 16px;
             color: var(--link);
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .person-card-desc {
@@ -414,6 +451,7 @@
             color: var(--text-secondary);
             line-height: 1.5;
             display: -webkit-box;
+            line-clamp: 2;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
@@ -425,64 +463,90 @@
             margin-top: 4px;
         }
 
-        /* DETAIL - Wikipedia infobox */
         .infobox {
             float: right;
-            width: 280px;
-            margin: 0 0 1rem 1.25rem;
-            border: 1px solid var(--border);
+            clear: right;
+            width: 300px;
+            margin: 0 0 1em 1em;
+            border: 1px solid var(--border-card);
+            border-spacing: 3px;
+            background-color: var(--infobox-bg);
+            color: var(--infobox-text);
+            font-size: 90%;
+            line-height: 1.5em;
+            box-shadow: var(--shadow);
             border-radius: var(--radius);
-            background: var(--bg-secondary);
-            font-size: 13px;
         }
 
-        .infobox-title {
-            background: var(--border);
-            padding: 8px 12px;
-            font-weight: 600;
-            font-size: 15px;
+        .infobox-header {
+            background-color: var(--infobox-header) !important;
+            color: #000;
             text-align: center;
-            font-family: var(--font-serif);
+            font-size: 130%;
+            font-weight: bold;
+            padding: 5px;
+            border-bottom: 1px solid var(--border-card);
         }
 
         .infobox-image {
-            width: 100%;
-            padding: 8px;
+            text-align: center;
+            padding: 10px 0;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-card);
         }
 
         .infobox-image img {
+            max-width: 280px;
+            height: auto;
+            border: 1px solid var(--border-light);
+        }
+
+        .infobox-subheader {
+            background-color: var(--infobox-header);
+            color: #000;
+            font-weight: bold;
+            text-align: center;
+            padding: 4px;
+            font-size: 110%;
+            border-bottom: 1px solid var(--border-card);
+            border-top: 1px solid var(--border-card);
+        }
+
+        .infobox-data {
             width: 100%;
-            border-radius: var(--radius);
-            display: block;
+            border-collapse: collapse;
+            margin-top: 5px;
         }
 
-        .infobox-image-placeholder {
-            width: 100%;
-            height: 180px;
-            background: var(--bg-card);
+        .infobox-data th,
+        .infobox-data td {
+            vertical-align: top;
+            padding: 5px 8px;
+            border: none;
+            color: var(--infobox-text);
+        }
+
+        .infobox-data th {
+            text-align: left;
+            font-weight: bold;
+            width: 40%;
+        }
+
+        .infobox-actions {
+            padding: 10px;
+            text-align: center;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-card);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: var(--text-muted);
-            border-radius: var(--radius);
+            justify-content: space-around;
         }
 
-        .infobox-row {
-            padding: 4px 12px;
-            border-top: 1px solid var(--border-light);
-            display: flex;
-            gap: 8px;
-        }
-
-        .infobox-label {
-            font-weight: 600;
-            min-width: 70px;
-            color: var(--text-secondary);
-        }
-
-        .infobox-value {
-            color: var(--text);
+        @media (max-width: 640px) {
+            .infobox {
+                float: none;
+                width: 100%;
+                margin: 0 0 1em 0;
+            }
         }
 
         .detail-body {
@@ -503,7 +567,6 @@
             flex-wrap: wrap;
         }
 
-        /* ANSWERS */
         .answer-card {
             border: 1px solid var(--border-light);
             border-radius: var(--radius);
@@ -577,7 +640,6 @@
             text-decoration: underline;
         }
 
-        /* STATUS BADGES */
         .badge {
             display: inline-block;
             padding: 1px 8px;
@@ -619,7 +681,6 @@
             border-color: #6a2a2a;
         }
 
-        /* FORMS */
         .form-container {
             max-width: 400px;
             margin: 0 auto;
@@ -729,7 +790,6 @@
             color: var(--text-secondary);
         }
 
-        /* ALERTS */
         .alert {
             padding: 8px 12px;
             border-radius: var(--radius);
@@ -764,7 +824,6 @@
             border-color: #6a2a2a;
         }
 
-        /* MODAL */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -803,7 +862,6 @@
             margin-top: 0.75rem;
         }
 
-        /* ADMIN */
         .admin-tabs {
             display: flex;
             gap: 0;
@@ -880,7 +938,6 @@
             flex-wrap: wrap;
         }
 
-        /* IMAGE UPLOAD */
         .upload-area {
             border: 2px dashed var(--border-light);
             border-radius: var(--radius);
@@ -906,7 +963,6 @@
             display: none;
         }
 
-        /* LEGAL */
         .legal h1 {
             font-family: var(--font-serif);
             font-size: 1.5rem;
@@ -943,7 +999,6 @@
             margin-bottom: 2px;
         }
 
-        /* EMPTY */
         .empty {
             text-align: center;
             padding: 2.5rem 1rem;
@@ -966,7 +1021,6 @@
             opacity: 0.5;
         }
 
-        /* LOADING */
         .loading {
             text-align: center;
             padding: 2rem;
@@ -988,7 +1042,6 @@
             }
         }
 
-        /* TOAST */
         .toast-box {
             position: fixed;
             bottom: 1rem;
@@ -1030,7 +1083,6 @@
             }
         }
 
-        /* PAGINATION */
         .pagination {
             display: flex;
             gap: 4px;
@@ -1061,7 +1113,6 @@
             border-color: var(--accent);
         }
 
-        /* FOOTER */
         .footer {
             background: var(--bg-card);
             border-top: 1px solid var(--border-light);
@@ -1104,7 +1155,6 @@
             color: var(--text-muted);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             .header-inner {
                 padding: 0 0.75rem;
@@ -1167,6 +1217,46 @@
                 height: 140px;
             }
         }
+
+        .wiki-body {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .wiki-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .wiki-sidebar {
+            width: 300px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 850px) {
+            .wiki-body {
+                flex-direction: column;
+            }
+
+            .wiki-sidebar {
+                width: 100%;
+                order: -1;
+            }
+        }
+
+        .infobox-image-placeholder {
+            height: 150px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-style: italic;
+            border-bottom: 1px solid var(--border-card);
+        }
+
+        \n
     </style>
 </head>
 
@@ -1191,7 +1281,6 @@
     </header>
 
     <div class="main-wrapper">
-        <!-- HOME -->
         <section id="section-home" class="section">
             <div class="content-box">
                 <h1 class="wiki-heading">Son Eklenen Profiller</h1>
@@ -1221,6 +1310,8 @@
                         <input type="password" class="form-input" id="login-password" required
                             autocomplete="current-password">
                     </div>
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAACdTdbnSxv93vDRI" data-theme="auto"
+                        style="margin-bottom:1rem"></div>
                     <button type="submit" class="btn btn-block" id="login-btn">Giriş Yap</button>
                 </form>
                 <p class="form-link">Hesabınız yok mu? <a href="#register">Kayıt olun</a></p>
@@ -1256,63 +1347,106 @@
                                 href="#kvkk">KVKK Aydınlatma Metni</a>'ni okudum, kabul ediyorum.
                         </label>
                     </div>
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAACdTdbnSxv93vDRI" data-theme="auto"
+                        style="margin-bottom:1rem"></div>
                     <button type="submit" class="btn btn-block" id="register-btn">Kayıt Ol</button>
                 </form>
                 <p class="form-link">Zaten hesabınız var mı? <a href="#login">Giriş yapın</a></p>
             </div>
         </section>
 
-        <!-- CREATE PERSON -->
         <section id="section-create" class="section">
-            <div class="content-box" style="max-width:560px;margin:0 auto">
+            <div class="content-box" style="max-width:800px;margin:0 auto">
                 <h1 class="wiki-heading">Yeni Profil Oluştur</h1>
                 <div id="create-alert" class="alert"></div>
                 <form id="create-form" onsubmit="App.handleCreatePerson(event)">
                     <div class="form-group">
-                        <label class="form-label">İsim</label>
+                        <label class="form-label">Kişi / Karakter Adı</label>
                         <input type="text" class="form-input" id="create-name" required minlength="2" maxlength="100"
-                            placeholder="Kişi veya karakter adı">
+                            placeholder="Örn: Elon Musk (Parodi) veya Süpermen">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Resim (isteğe bağlı)</label>
-                        <div class="upload-area" id="upload-area"
-                            onclick="document.getElementById('create-image').click()">
-                            <svg viewBox="0 0 24 24"
-                                style="width:32px;height:32px;stroke:var(--text-muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:4px">
-                                <path
-                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                                <circle cx="12" cy="13" r="4" />
-                            </svg>
-                            <p style="font-size:13px;color:var(--text-secondary)">Resim yüklemek için tıklayın</p>
-                            <p style="font-size:11px;color:var(--text-muted)">JPEG, PNG, WebP, GIF — Maks. 5MB</p>
-                            <input type="file" id="create-image" accept="image/jpeg,image/png,image/webp,image/gif"
-                                onchange="App.handleImagePreview(event)">
+
+                    <div style="display:flex;gap:20px;flex-wrap:wrap">
+                        <div style="flex:1;min-width:280px">
+                            <div class="form-group">
+                                <label class="form-label">Profil Resmi</label>
+                                <div class="upload-area" id="upload-area"
+                                    onclick="document.getElementById('create-image').click()">
+                                    <div id="upload-preview"
+                                        style="display:flex;flex-direction:column;align-items:center">
+                                        <svg viewBox="0 0 24 24"
+                                            style="width:32px;height:32px;stroke:var(--text-muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:4px">
+                                            <path
+                                                d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                                            <circle cx="12" cy="13" r="4" />
+                                        </svg>
+                                        <p style="font-size:13px;color:var(--text-secondary)">Resim yükle (Tıkla)</p>
+                                        <p style="font-size:11px;color:var(--text-muted)">Max 5MB (JPEG, PNG, GIF)</p>
+                                    </div>
+                                </div>
+                                <input type="file" id="create-image" accept="image/jpeg,image/png,image/webp,image/gif"
+                                    style="display:none" onchange="App.handleImagePreview(event)">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Parodi Açıklama (Ana Metin)</label>
+                                <textarea class="form-textarea" id="create-description" required minlength="10"
+                                    maxlength="2000" rows="8"
+                                    placeholder="Bu kişi hakkında ansiklopedik bir dille parodi açıklama yazın..."></textarea>
+                                <p class="form-hint">10-2000 karakter.</p>
+                            </div>
+                        </div>
+
+                        <div class="infobox-preview-area"
+                            style="flex:1;min-width:280px;background:var(--bg-secondary);padding:15px;border:1px solid var(--border);border-radius:8px">
+                            <h3
+                                style="margin-top:0;margin-bottom:15px;font-size:15px;border-bottom:1px solid var(--border-light);padding-bottom:5px;color:var(--text)">
+                                Genel Bilgiler (Infobox)</h3>
+
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:12.5px">Bu Kim? (Kısa Tanım)</label>
+                                <input type="text" class="form-input" id="create-who"
+                                    placeholder="Örn: Amerikalı girişimci" maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:12.5px">Doğum Yeri</label>
+                                <input type="text" class="form-input" id="create-birthplace"
+                                    placeholder="Örn: Mars Kolonisi" maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:12.5px">Mal Varlığı</label>
+                                <input type="text" class="form-input" id="create-networth"
+                                    placeholder="Örn: 5 Dolar + Yemek Çeki" maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:12.5px">Etkin Yıllar</label>
+                                <input type="text" class="form-input" id="create-years"
+                                    placeholder="Örn: 2000 - Günümüz" maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:12.5px">Meslek / Tür</label>
+                                <input type="text" class="form-input" id="create-occupation"
+                                    placeholder="Örn: CEO / İnternet Trollü" maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:12.5px">Kişi Türü</label>
+                                <select class="form-select" id="create-public-figure">
+                                    <option value="1">Kamusal / Tanınmış Kişi</option>
+                                    <option value="0">Kurgusal Karakter</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Parodi Açıklama</label>
-                        <textarea class="form-textarea" id="create-description" required minlength="10" maxlength="500"
-                            placeholder="Kısa ve eğlenceli bir parodi açıklama..."></textarea>
-                        <p class="form-hint">10-500 karakter. Hakaret ve küfür yasaktır.</p>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Kişi Türü</label>
-                        <select class="form-select" id="create-public-figure">
-                            <option value="1">Kamusal / tanınmış kişi</option>
-                            <option value="0">Kurgusal karakter</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-block" id="create-btn">Profili Oluştur</button>
+
+                    <button type="submit" class="btn btn-block primary" id="create-btn" style="margin-top:20px">Profili
+                        Yayınla</button>
                 </form>
             </div>
         </section>
 
-        <!-- PERSON DETAIL -->
         <section id="section-person" class="section">
             <div class="content-box" id="person-detail"></div>
         </section>
 
-        <!-- MY POSTS -->
         <section id="section-myposts" class="section">
             <div class="content-box">
                 <h1 class="wiki-heading">Gönderilerim</h1>
@@ -1320,7 +1454,6 @@
             </div>
         </section>
 
-        <!-- ADMIN -->
         <section id="section-admin" class="section">
             <div class="content-box">
                 <h1 class="wiki-heading">Yönetim Paneli</h1>
@@ -1339,7 +1472,6 @@
             </div>
         </section>
 
-        <!-- TERMS -->
         <section id="section-terms" class="section">
             <div class="content-box legal">
                 <h1>Kullanım Şartları</h1>
@@ -1383,7 +1515,6 @@
             </div>
         </section>
 
-        <!-- PRIVACY -->
         <section id="section-privacy" class="section">
             <div class="content-box legal">
                 <h1>Gizlilik Politikası</h1>
@@ -1417,7 +1548,6 @@
             </div>
         </section>
 
-        <!-- KVKK -->
         <section id="section-kvkk" class="section">
             <div class="content-box legal">
                 <h1>KVKK Aydınlatma Metni</h1>
@@ -1503,7 +1633,6 @@
             </div>
         </section>
 
-        <!-- VERIFY EMAIL -->
         <section id="section-verify" class="section">
             <div class="content-box form-container" style="text-align:center">
                 <h1 class="wiki-heading">Doğrulama</h1>
@@ -1513,7 +1642,6 @@
         </section>
     </div>
 
-    <!-- REPORT MODAL -->
     <div class="modal-overlay" id="report-modal">
         <div class="modal">
             <h2 class="modal-title">İçeriği Raporla</h2>
@@ -1529,7 +1657,6 @@
         </div>
     </div>
 
-    <!-- DELETE CONFIRM MODAL -->
     <div class="modal-overlay" id="delete-modal">
         <div class="modal">
             <h2 class="modal-title">Silme Onayı</h2>
@@ -1565,9 +1692,8 @@
     </footer>
 
     <script>
-        // Backend URL (Kullanıcının sağladığı Worker adresi)
-        const API_BASE = 'https://notwiki.notwiki1.workers.dev';
 
+        const API_BASE = 'https://notwiki.notwiki1.workers.dev';
         const App = {
             user: null,
             currentPage: 'home',
@@ -1621,9 +1747,9 @@
                     nav.innerHTML = items;
                 } else {
                     nav.innerHTML = `
-                <button class="nav-btn" onclick="App.navigate('login')">Giriş</button>
-                <button class="nav-btn primary" onclick="App.navigate('register')">Kayıt Ol</button>
-              `;
+        <button class="nav-btn" onclick="App.navigate('login')">Giriş</button>
+        <button class="nav-btn primary" onclick="App.navigate('register')">Kayıt Ol</button>
+      `;
                 }
             },
 
@@ -1739,7 +1865,9 @@
                 try {
                     const email = document.getElementById('login-email').value;
                     const password = document.getElementById('login-password').value;
-                    const data = await this.api('POST', '/api/auth/login', { email, password });
+                    const turnstile_token = document.querySelector('[name="cf-turnstile-response"]')?.value;
+                    if (!turnstile_token) throw new Error('Güvenlik doğrulamasını tamamlayın.');
+                    const data = await this.api('POST', '/api/auth/login', { email, password, turnstile_token });
                     localStorage.setItem('nw_token', data.token);
                     this.user = data.user;
                     this.updateNav();
@@ -1763,8 +1891,10 @@
                     const username = document.getElementById('register-username').value;
                     const password = document.getElementById('register-password').value;
                     const terms = document.getElementById('register-terms').checked;
+                    const turnstile_token = document.querySelector('[name="cf-turnstile-response"]')?.value;
+                    if (!turnstile_token) throw new Error('Güvenlik doğrulamasını tamamlayın.');
                     if (!terms) throw new Error('Kullanım şartlarını kabul etmelisiniz.');
-                    const data = await this.api('POST', '/api/auth/register', { email, username, password });
+                    const data = await this.api('POST', '/api/auth/register', { email, username, password, turnstile_token });
                     this.showAlert('register-alert', 'Hesabınız başarıyla oluşturuldu! Artık giriş yapabilirsiniz.', 'success');
                     document.getElementById('register-form').reset();
                 } catch (err) {
@@ -1820,14 +1950,14 @@
                     ? `<img class="person-thumb" src="${API_BASE}${p.image_url}" alt="${this.esc(p.name)}" loading="lazy">`
                     : `<div class="person-thumb-placeholder"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:var(--text-muted);fill:none;stroke-width:1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>`;
                 return `
-              <article class="person-card" onclick="App.navigate('person/${p.id}')">
-                ${img}
-                <div class="person-card-body">
-                  <div class="person-card-name">${this.esc(p.name)}</div>
-                  <div class="person-card-desc">${this.esc(p.description)}</div>
-                  <div class="person-card-meta">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
-                </div>
-              </article>`;
+      <article class="person-card" onclick="App.navigate('person/${p.id}')">
+        ${img}
+        <div class="person-card-body">
+          <div class="person-card-name">${this.esc(p.name)}</div>
+          <div class="person-card-desc">${this.esc(p.description)}</div>
+          <div class="person-card-meta">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
+        </div>
+      </article>`;
             },
 
             renderPagination(pg, search) {
@@ -1851,7 +1981,7 @@
 
                     const img = p.image_url
                         ? `<div class="infobox-image"><img src="${API_BASE}${p.image_url}" alt="${this.esc(p.name)}"></div>`
-                        : `<div class="infobox-image"><div class="infobox-image-placeholder"><svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:var(--text-muted);fill:none;stroke-width:1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div></div>`;
+                        : `<div class="infobox-image"><div class="infobox-image-placeholder">Resim Yok</div></div>`;
 
                     let badge = '';
                     if (p.visibility_status !== 'approved') {
@@ -1860,41 +1990,79 @@
                         badge = ` <span class="badge ${cls}">${lbl}</span>`;
                     }
 
+                    const info = p.infobox || {};
+                    const infoRows = [
+                        { l: 'Bu Kim?', v: info['Bu Kim?'] || info['Bu kim?'] }, // Handle case sensitivity if needed
+                        { l: 'Doğum Yeri', v: info['Doğum Yeri'] },
+                        { l: 'Mal Varlığı', v: info['Mal Varlığı'] },
+                        { l: 'Etkin Yıllar', v: info['Etkin Yıllar'] },
+                        { l: 'Meslek / Tür', v: info['Meslek / Tür'] || info['Tür'] },
+                        { l: 'Ekleyen', v: `@${this.esc(p.creator_username)}` },
+                        { l: 'Tarih', v: this.formatDate(p.created_at) },
+                        { l: 'Durum', v: badge || 'Onaylı' }
+                    ].filter(i => i.v).map(i => `
+                <tr>
+                    <th>${this.esc(i.l)}</th>
+                    <td>${i.l === 'Durum' || i.l === 'Ekleyen' ? i.v : this.esc(i.v)}</td>
+                </tr>
+            `).join('');
+
                     const canDelete = this.user && (this.user.id === p.created_by || this.user.role === 'admin');
 
-                    c.innerHTML = `
+                    const infoboxHtml = `
                 <div class="infobox">
-                  <div class="infobox-title">${this.esc(p.name)}</div>
-                  ${img}
-                  <div class="infobox-row"><span class="infobox-label">Ekleyen</span><span class="infobox-value">@${this.esc(p.creator_username)}</span></div>
-                  <div class="infobox-row"><span class="infobox-label">Tarih</span><span class="infobox-value">${this.formatDate(p.created_at)}</span></div>
-                  <div class="infobox-row"><span class="infobox-label">Tür</span><span class="infobox-value">${p.is_public_figure ? 'Kamusal kişi' : 'Kurgusal'}</span></div>
-                  <div class="infobox-row"><span class="infobox-label">Durum</span><span class="infobox-value">${badge || '<span class="badge badge-approved">Onaylı</span>'}</span></div>
+                    <div class="infobox-header">${this.esc(p.name)}</div>
+                    ${img}
+                    <div class="infobox-subheader">Genel Bilgiler</div>
+                    <table class="infobox-data">
+                        ${infoRows}
+                    </table>
+                    <div class="infobox-actions" style="border-top:1px solid var(--border-light); padding:10px; display:flex; justify-content:space-between; align-items:center; background:var(--bg-card)">
+                         <button class="btn btn-sm" onclick="App.openReportModal('person',${p.id})" style="background:none; border:none; color:var(--text-muted); display:flex; align-items:center; gap:5px; font-size:13px; cursor:pointer; padding:0">
+                                <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                                Raporla
+                        </button>
+                        ${canDelete ? `<button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})" style="display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:4px; font-size:12px">
+                                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                                Sil
+                        </button>` : ''}
+                    </div>
                 </div>
-                <div class="detail-body">
-                  <h1 class="wiki-heading">${this.esc(p.name)}${badge}</h1>
-                  <p class="detail-desc">${this.esc(p.description)}</p>
-                  <div class="detail-actions">
-                    <button class="btn btn-sm btn-secondary" onclick="App.openReportModal('person',${p.id})"><svg viewBox="0 0 24 24" class="icon-inline"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> Raporla</button>
-                    ${canDelete ? `<button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})"><svg viewBox="0 0 24 24" class="icon-inline"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Sil</button>` : ''}
-                  </div>
-        
-                  <h2 class="wiki-heading-sm">Bu kim?</h2>
-                  ${this.user ? `
-                    <form onsubmit="App.submitAnswer(event, ${p.id})" style="margin-bottom:0.75rem">
-                      <div style="display:flex;gap:6px">
-                        <input type="text" class="form-input" id="answer-input" placeholder="Kısa ve eğlenceli bir yanıt..." minlength="3" maxlength="300" required>
-                        <button type="submit" class="btn btn-sm">Gönder</button>
-                      </div>
-                    </form>
-                  ` : '<p style="color:var(--text-muted);font-size:13px;margin-bottom:0.75rem">Yanıt eklemek için <a href="#login">giriş yapın</a>.</p>'}
-                  <div id="answers-list">
-                    ${answers.length === 0
-                            ? '<div class="empty" style="padding:1rem"><p>Henüz kimse yanıt vermemiş. İlk yanıtı siz yazın!</p></div>'
+            `;
+
+
+                    c.innerHTML = `
+                <div class="wiki-body">
+                    <div class="wiki-main">
+                        <h1 class="wiki-heading">${this.esc(p.name)}</h1>
+                        
+                        <div class="detail-desc">
+                            ${this.esc(p.description).replace(/\n/g, '<br>')}
+                        </div>
+
+                        <h2 class="wiki-heading-sm">Tartışma / "Bu Kim?"</h2>
+                        ${this.user ? `
+                            <form onsubmit="App.submitAnswer(event, ${p.id})" style="margin-bottom:1.5rem;background:var(--bg-secondary);padding:15px;border:1px solid var(--border-light);border-radius:var(--radius);">
+                                <div style="display:flex;gap:8px">
+                                    <input type="text" class="form-input" id="answer-input" placeholder="Bu kişi hakkında kısa ve komik bir yorum yaz..." minlength="3" maxlength="300" required>
+                                    <button type="submit" class="btn btn-sm primary" style="padding:0 1.5rem">Yorum Yap</button>
+                                </div>
+                            </form>
+                        ` : '<p style="color:var(--text-muted);font-size:13.5px;margin-bottom:1.5rem;padding:1rem;background:var(--bg-secondary);border-radius:var(--radius)">Yorum yapmak için <a href="#login" style="font-weight:600">giriş yapın</a>.</p>'}
+                        
+                        <div id="answers-list">
+                            ${answers.length === 0
+                            ? '<div class="empty" style="padding:2rem;border:1px dashed var(--border);border-radius:var(--radius);text-align:center;color:var(--text-muted)"><p>Henüz kimse yorum yapmamış. İlk yorumu sen yaz!</p></div>'
                             : answers.map(a => this.renderAnswer(a, p.created_by)).join('')}
-                  </div>
+                        </div>
+                    </div>
+
+                    <div class="wiki-sidebar">
+                        ${infoboxHtml}
+                    </div>
                 </div>`;
                 } catch (err) {
+                    console.error(err);
                     c.innerHTML = `<div class="empty"><p>${err.message}</p></div>`;
                 }
             },
@@ -1903,17 +2071,22 @@
                 const sc = a.vote_score > 0 ? 'vote-positive' : a.vote_score < 0 ? 'vote-negative' : '';
                 const canDel = this.user && (this.user.id === a.created_by || this.user.role === 'admin');
                 return `
-              <div class="answer-card">
-                <div class="answer-by">@${this.esc(a.creator_username)}</div>
-                <div class="answer-text">${this.esc(a.content)}</div>
-                <div class="answer-actions">
-                  <button class="vote-btn" onclick="App.vote(${a.id},1)" title="Beğen">▲</button>
-                  <span class="vote-score ${sc}">${a.vote_score}</span>
-                  <button class="vote-btn" onclick="App.vote(${a.id},-1)" title="Beğenme">▼</button>
-                  <button class="report-link" onclick="App.openReportModal('answer',${a.id})">raporla</button>
-                  ${canDel ? `<button class="report-link" style="color:var(--danger)" onclick="App.openDeleteModal('answer',${a.id})">sil</button>` : ''}
-                </div>
-              </div>`;
+      <div class="answer-card">
+        <div class="answer-by">@${this.esc(a.creator_username)}</div>
+        <div class="answer-text">${this.esc(a.content)}</div>
+          <div class="answer-actions">
+           <button class="vote-btn" onclick="App.vote(${a.id},1)" title="Beğen">▲</button>
+           <span class="vote-score ${sc}">${a.vote_score}</span>
+           <button class="vote-btn" onclick="App.vote(${a.id},-1)" title="Beğenme">▼</button>
+           
+           <button class="report-link" onclick="App.openReportModal('answer',${a.id})" title="Raporla" style="display:flex;align-items:center;padding:2px">
+             <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+           </button>
+           ${canDel ? `<button class="report-link" style="color:var(--danger);display:flex;align-items:center;padding:2px" onclick="App.openDeleteModal('answer',${a.id})" title="Sil">
+             <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+           </button>` : ''}
+         </div>
+      </div>`;
             },
 
             async submitAnswer(e, personId) {
@@ -1940,11 +2113,11 @@
             handleImagePreview(e) {
                 const file = e.target.files[0];
                 if (!file) return;
-                const area = document.getElementById('upload-area');
+                const preview = document.getElementById('upload-preview');
                 const reader = new FileReader();
                 reader.onload = (ev) => {
-                    area.innerHTML = `<img src="${ev.target.result}" alt="Önizleme"><p style="font-size:12px;color:var(--text-muted);margin-top:6px">Değiştirmek için tıklayın</p>
-                <input type="file" id="create-image" accept="image/jpeg,image/png,image/webp,image/gif" onchange="App.handleImagePreview(event)">`;
+                    preview.innerHTML = `<img src="${ev.target.result}" alt="Önizleme" style="max-height:100px;border-radius:4px;margin-bottom:8px">
+                                        <p style="font-size:12px;color:var(--text-muted)">Değiştirmek için tıklayın</p>`;
                 };
                 reader.readAsDataURL(file);
             },
@@ -1959,6 +2132,15 @@
                     const description = document.getElementById('create-description').value;
                     const isPublic = document.getElementById('create-public-figure').value === '1';
                     const fileInput = document.getElementById('create-image');
+
+                    const infobox = {
+                        "Bu Kim?": document.getElementById('create-who')?.value,
+                        "Doğum Yeri": document.getElementById('create-birthplace')?.value,
+                        "Mal Varlığı": document.getElementById('create-networth')?.value,
+                        "Etkin Yıllar": document.getElementById('create-years')?.value,
+                        "Meslek / Tür": document.getElementById('create-occupation')?.value
+                    };
+
                     let imageUrl = null;
 
                     if (fileInput?.files?.[0]) {
@@ -1968,21 +2150,35 @@
                             const upData = await this.api('POST', '/api/upload-url', { filename: file.name, content_type: file.type });
                             await this.apiRaw('PUT', `/api/upload/${upData.key}`, file, file.type);
                             imageUrl = `/api/images/${upData.key}`;
-                        } catch (ue) { console.warn('Resim yükleme hatası:', ue.message); }
+                        } catch (ue) {
+                            console.error('Resim yükleme hatası:', ue);
+                            this.toast('Resim yüklenemedi: ' + (ue.message || ue), 'error');
+                            btn.disabled = false;
+                            btn.textContent = 'Profili Yayınla';
+                            return; // STOP HERE
+                        }
                     }
 
-                    const data = await this.api('POST', '/api/persons', { name, description, image_url: imageUrl, is_public_figure: isPublic });
+                    const data = await this.api('POST', '/api/persons', {
+                        name,
+                        description,
+                        image_url: imageUrl,
+                        is_public_figure: isPublic,
+                        infobox
+                    });
+
                     this.toast(data.message);
                     document.getElementById('create-form').reset();
+
                     const area = document.getElementById('upload-area');
-                    area.innerHTML = `<svg viewBox="0 0 24 24" style="width:32px;height:32px;stroke:var(--text-muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:4px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><p style="font-size:13px;color:var(--text-secondary)">Resim yüklemek için tıklayın</p><p style="font-size:11px;color:var(--text-muted)">JPEG, PNG, WebP, GIF — Maks. 5MB</p>
-                <input type="file" id="create-image" accept="image/jpeg,image/png,image/webp,image/gif" onchange="App.handleImagePreview(event)">`;
+                    area.innerHTML = `<svg viewBox="0 0 24 24" style="width:32px;height:32px;stroke:var(--text-muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:4px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><p style="font-size:13px;color:var(--text-secondary)">Resim yüklemek için tıklayın</p><p style="font-size:11px;color:var(--text-muted)">JPEG, PNG, WebP, GIF — Maks. 5MB</p><input type="file" id="create-image" accept="image/jpeg,image/png,image/webp,image/gif" onchange="App.handleImagePreview(event)">`;
+
                     this.navigate('home');
                 } catch (err) {
                     this.showAlert('create-alert', err.message, 'error');
                 } finally {
                     btn.disabled = false;
-                    btn.textContent = 'Profili Oluştur';
+                    btn.textContent = 'Profili Yayınla';
                 }
             },
 
@@ -2000,18 +2196,18 @@
                             : p.visibility_status === 'hidden' ? '<span class="badge badge-hidden">Gizli</span>'
                                 : '<span class="badge badge-approved">Onaylı</span>';
                         return `
-                  <div class="admin-item">
-                    <div class="admin-item-top">
-                      <div>
-                        <strong style="color:var(--link);cursor:pointer" onclick="App.navigate('person/${p.id}')">${this.esc(p.name)}</strong> ${badge}
-                        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description).substring(0, 120)}${p.description.length > 120 ? '...' : ''}</div>
-                        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">${this.formatDate(p.created_at)}</div>
-                      </div>
-                      <div class="admin-btns">
-                        <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
-                      </div>
-                    </div>
-                  </div>`;
+          <div class="admin-item">
+            <div class="admin-item-top">
+              <div>
+                <strong style="color:var(--link);cursor:pointer" onclick="App.navigate('person/${p.id}')">${this.esc(p.name)}</strong> ${badge}
+                <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description).substring(0, 120)}${p.description.length > 120 ? '...' : ''}</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">${this.formatDate(p.created_at)}</div>
+              </div>
+              <div class="admin-btns">
+                <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
+              </div>
+            </div>
+          </div>`;
                     }).join('');
                 } catch (err) {
                     list.innerHTML = `<div class="empty"><p>${err.message}</p></div>`;
@@ -2089,11 +2285,11 @@
                 try {
                     const stats = await this.api('GET', '/api/admin/stats');
                     document.getElementById('admin-stats').innerHTML = `
-                <div class="stat-box"><div class="stat-num">${stats.total_users}</div><div class="stat-lbl">Kullanıcı</div></div>
-                <div class="stat-box"><div class="stat-num">${stats.total_persons}</div><div class="stat-lbl">Profil</div></div>
-                <div class="stat-box"><div class="stat-num">${stats.pending_persons}</div><div class="stat-lbl">Bekleyen</div></div>
-                <div class="stat-box"><div class="stat-num">${stats.pending_reports}</div><div class="stat-lbl">Rapor</div></div>
-              `;
+        <div class="stat-box"><div class="stat-num">${stats.total_users}</div><div class="stat-lbl">Kullanıcı</div></div>
+        <div class="stat-box"><div class="stat-num">${stats.total_persons}</div><div class="stat-lbl">Profil</div></div>
+        <div class="stat-box"><div class="stat-num">${stats.pending_persons}</div><div class="stat-lbl">Bekleyen</div></div>
+        <div class="stat-box"><div class="stat-num">${stats.pending_reports}</div><div class="stat-lbl">Rapor</div></div>
+      `;
                     this.switchAdminTab('pending');
                 } catch (err) { this.toast(err.message, 'error'); }
             },
@@ -2110,49 +2306,49 @@
                             const d = await this.api('GET', '/api/admin/pending');
                             if (!d.persons.length) { c.innerHTML = '<div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><p>Onay bekleyen profil bulunmuyor. Her şey yolunda!</p></div>'; return; }
                             c.innerHTML = d.persons.map(p => `
-                    <div class="admin-item">
-                      <div class="admin-item-top">
-                        <div>
-                          <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
-                          <strong>${this.esc(p.name)}</strong> ${p.is_public_figure ? '<span class="badge badge-pending">Kamusal</span>' : ''}
-                          <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description)}</div>
-                        </div>
-                        <div class="admin-btns">
-                          <button class="btn btn-sm" style="background:var(--success);border-color:var(--success)" onclick="App.adminAction('approve',${p.id})">Onayla</button>
-                          <button class="btn btn-sm btn-secondary" onclick="App.adminAction('reject',${p.id})">Reddet</button>
-                          <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
-                        </div>
-                      </div>
-                    </div>
-                  `).join('');
+            <div class="admin-item">
+              <div class="admin-item-top">
+                <div>
+                  <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
+                  <strong>${this.esc(p.name)}</strong> ${p.is_public_figure ? '<span class="badge badge-pending">Kamusal</span>' : ''}
+                  <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description)}</div>
+                </div>
+                <div class="admin-btns">
+                  <button class="btn btn-sm" style="background:var(--success);border-color:var(--success)" onclick="App.adminAction('approve',${p.id})">Onayla</button>
+                  <button class="btn btn-sm btn-secondary" onclick="App.adminAction('reject',${p.id})">Reddet</button>
+                  <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
                             break;
                         }
                         case 'reports': {
                             const d = await this.api('GET', '/api/admin/reports?status=pending');
                             if (!d.reports.length) { c.innerHTML = '<div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><p>Bekleyen rapor bulunmuyor. Topluluk düzenli!</p></div>'; return; }
                             c.innerHTML = d.reports.map(r => `
-                    <div class="admin-item">
-                      <div class="admin-item-top">
-                        <div>
-                          <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(r.reporter_username)} · ${this.formatDate(r.created_at)}</div>
-                          <div><strong>Tür:</strong> ${r.target_type === 'person' ? 'Profil' : 'Yanıt'} #${r.target_id}</div>
-                          <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(r.reason)}</div>
-                        </div>
-                        <div class="admin-btns">
-                          <button class="btn btn-sm" onclick="App.resolveReport(${r.id},'reviewed')">İncele</button>
-                          <button class="btn btn-sm btn-secondary" onclick="App.resolveReport(${r.id},'dismissed')">Reddet</button>
-                        </div>
-                      </div>
-                    </div>
-                  `).join('');
+            <div class="admin-item">
+              <div class="admin-item-top">
+                <div>
+                  <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(r.reporter_username)} · ${this.formatDate(r.created_at)}</div>
+                  <div><strong>Tür:</strong> ${r.target_type === 'person' ? 'Profil' : 'Yanıt'} #${r.target_id}</div>
+                  <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(r.reason)}</div>
+                </div>
+                <div class="admin-btns">
+                  <button class="btn btn-sm" onclick="App.resolveReport(${r.id},'reviewed')">İncele</button>
+                  <button class="btn btn-sm btn-secondary" onclick="App.resolveReport(${r.id},'dismissed')">Reddet</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
                             break;
                         }
                         case 'users': {
                             const d = await this.api('GET', '/api/admin/users');
                             c.innerHTML = `<div style="display:flex;gap:4px;margin-bottom:0.75rem">
-                    <input type="text" class="form-input" id="admin-user-search" placeholder="Kullanıcı ara..." style="flex:1">
-                    <button class="btn btn-sm" onclick="App.searchAdminUsers()">Ara</button>
-                  </div>` + d.users.map(u => this.renderAdminUser(u)).join('');
+            <input type="text" class="form-input" id="admin-user-search" placeholder="Kullanıcı ara..." style="flex:1">
+            <button class="btn btn-sm" onclick="App.searchAdminUsers()">Ara</button>
+          </div>` + d.users.map(u => this.renderAdminUser(u)).join('');
                             break;
                         }
                         case 'allposts': {
@@ -2163,18 +2359,18 @@
                                     : p.visibility_status === 'hidden' ? '<span class="badge badge-hidden">Gizli</span>'
                                         : '<span class="badge badge-approved">Onaylı</span>';
                                 return `
-                      <div class="admin-item">
-                        <div class="admin-item-top">
-                          <div>
-                            <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
-                            <strong style="cursor:pointer;color:var(--link)" onclick="App.navigate('person/${p.id}')">${this.esc(p.name)}</strong> ${badge}
-                            <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description).substring(0, 100)}...</div>
-                          </div>
-                          <div class="admin-btns">
-                            <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
-                          </div>
-                        </div>
-                      </div>`;
+              <div class="admin-item">
+                <div class="admin-item-top">
+                  <div>
+                    <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
+                    <strong style="cursor:pointer;color:var(--link)" onclick="App.navigate('person/${p.id}')">${this.esc(p.name)}</strong> ${badge}
+                    <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description).substring(0, 100)}...</div>
+                  </div>
+                  <div class="admin-btns">
+                    <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
+                  </div>
+                </div>
+              </div>`;
                             }).join('');
                             break;
                         }
@@ -2184,19 +2380,19 @@
 
             renderAdminUser(u) {
                 return `<div class="admin-item">
-              <div class="admin-item-top">
-                <div>
-                  <strong>@${this.esc(u.username)}</strong>
-                  <div style="font-size:11.5px;color:var(--text-muted)">Rol: ${u.role} · Durum: ${u.status} · ${this.formatDate(u.created_at)}</div>
-                </div>
-                <div class="admin-btns">
-                  ${u.status === 'active' ? `
-                    <button class="btn btn-sm btn-secondary" onclick="App.adminUserAction('shadow-ban',${u.id})">Gölge Ban</button>
-                    <button class="btn btn-sm btn-danger" onclick="App.adminUserAction('ban',${u.id})">Banla</button>
-                  ` : `<button class="btn btn-sm" onclick="App.adminUserAction('unban',${u.id})">Ban Kaldır</button>`}
-                </div>
-              </div>
-            </div>`;
+      <div class="admin-item-top">
+        <div>
+          <strong>@${this.esc(u.username)}</strong>
+          <div style="font-size:11.5px;color:var(--text-muted)">Rol: ${u.role} · Durum: ${u.status} · ${this.formatDate(u.created_at)}</div>
+        </div>
+        <div class="admin-btns">
+          ${u.status === 'active' ? `
+            <button class="btn btn-sm btn-secondary" onclick="App.adminUserAction('shadow-ban',${u.id})">Gölge Ban</button>
+            <button class="btn btn-sm btn-danger" onclick="App.adminUserAction('ban',${u.id})">Banla</button>
+          ` : `<button class="btn btn-sm" onclick="App.adminUserAction('unban',${u.id})">Ban Kaldır</button>`}
+        </div>
+      </div>
+    </div>`;
             },
 
             async adminAction(action, personId) {
@@ -2230,9 +2426,9 @@
                     const d = await this.api('GET', `/api/admin/users?q=${encodeURIComponent(q)}`);
                     const c = document.getElementById('admin-content');
                     const searchHtml = `<div style="display:flex;gap:4px;margin-bottom:0.75rem">
-                <input type="text" class="form-input" id="admin-user-search" placeholder="Kullanıcı ara..." value="${this.esc(q)}" style="flex:1">
-                <button class="btn btn-sm" onclick="App.searchAdminUsers()">Ara</button>
-              </div>`;
+        <input type="text" class="form-input" id="admin-user-search" placeholder="Kullanıcı ara..." value="${this.esc(q)}" style="flex:1">
+        <button class="btn btn-sm" onclick="App.searchAdminUsers()">Ara</button>
+      </div>`;
                     c.innerHTML = searchHtml + d.users.map(u => this.renderAdminUser(u)).join('');
                 } catch (err) { this.toast(err.message, 'error'); }
             },
@@ -2252,6 +2448,7 @@
 
         document.addEventListener('DOMContentLoaded', () => App.init());
         window.addEventListener('resize', () => App.updateMobileSearch());
+
     </script>
 </body>
 
