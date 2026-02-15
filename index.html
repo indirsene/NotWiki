@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="NotWiki — Parodi ve mizah amaçlı kullanıcı içerikli bilgi platformu. Gerçek bilgi kaynağı değildir.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="NotWiki — Parodi Bilgi Platformu">
+    <meta property="og:description"
+        content="Mizah amaçlı kullanıcı içerikli parodi profilleri. Gerçek bilgi kaynağı değildir.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://notwiki.pages.dev">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>NotWiki — Parodi Bilgi Platformu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Linux+Libertine:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #ffffff;
+            --bg-secondary: #f6f6f6;
+            --bg-card: #ffffff;
+            --bg-card-hover: #fafafa;
+            --bg-input: #ffffff;
+            --bg-header: #ffffff;
+            --border: #a7d7f9;
+            --border-light: #e0e0e0;
+            --border-card: #a7d7f9;
+            --text: #202122;
+            --text-secondary: #54595d;
+            --text-muted: #72777d;
+            --link: #0645ad;
+            --link-hover: #0b0080;
+            --accent: #3366cc;
+            --accent-hover: #2a4b8d;
+            --success: #14866d;
+            --warning: #ac6600;
+            --danger: #d33;
+            --danger-hover: #b32424;
+            --highlight: #fee7a8;
+            --radius: 2px;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --transition: all 0.15s ease;
+            --font-serif: 'Linux Libertine', 'Georgia', 'Times', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --bg: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #1f1f3a;
+            --bg-input: #16213e;
+            --bg-header: #0f0f23;
+            --border: #2a2a5a;
+            --border-light: #2a2a5a;
+            --border-card: #3a3a6a;
+            --text: #e0e0e8;
+            --text-secondary: #a0a0b8;
+            --text-muted: #707088;
+            --link: #8ab4f8;
+            --link-hover: #aecbfa;
+            --accent: #8ab4f8;
+            --accent-hover: #aecbfa;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --danger-hover: #ef4444;
+            --highlight: #3a3520;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-secondary);
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 14px;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: var(--link-hover);
+        }
+
+        /* HEADER */
+        .header {
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            height: 56px;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: baseline;
+            cursor: pointer;
+            font-family: var(--font-serif);
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        .logo-not {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--danger);
+            text-decoration: line-through;
+            text-decoration-thickness: 2px;
+            margin-right: 1px;
+            font-style: italic;
+        }
+
+        .logo-wiki {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-left: 6px;
+            font-family: var(--font-sans);
+            font-style: italic;
+        }
+
+        .header-search {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .header-search input {
+            width: 100%;
+            padding: 6px 32px 6px 10px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            background: var(--bg-input);
+            color: var(--text);
+            font-size: 13px;
+            font-family: var(--font-sans);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .header-search input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(51, 102, 204, 0.15);
+        }
+
+        .header-search-btn {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-search-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .header-search-btn:hover svg {
+            stroke: var(--text);
+        }
+
+        .nav {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            padding: 5px 12px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 12.5px;
+            font-family: var(--font-sans);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .nav-btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .nav-btn.primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .nav-btn.danger {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .nav-btn.danger:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+            padding: 5px 7px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-secondary);
+        }
+
+        .theme-toggle:hover svg {
+            stroke: var(--text);
+        }
+
+        .icon-inline {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            vertical-align: -3px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* MAIN LAYOUT */
+        .main-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem;
+            min-height: calc(100vh - 56px - 180px);
+        }
+
+        .content-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+        }
+
+        /* SECTIONS */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* WIKI-STYLE HEADINGS */
+        .wiki-heading {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            font-size: 1.6rem;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 4px;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .wiki-heading-sm {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 2px;
+            margin: 1.25rem 0 0.5rem;
+            color: var(--text);
+        }
+
+        /* PERSON CARDS - Wikipedia infobox style */
+        .person-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .person-card {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .person-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-card);
+        }
+
+        .person-thumb {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            background: var(--bg-secondary);
+            flex-shrink: 0;
+            border: 1px solid var(--border-light);
+        }
+
+        .person-thumb-placeholder {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius);
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid var(--border-light);
+            color: var(--text-muted);
+            font-size: 1.5rem;
+        }
+
+        .person-card-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .person-card-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--link);
+            margin-bottom: 2px;
+        }
+
+        .person-card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .person-card-meta {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* DETAIL - Wikipedia infobox */
+        .infobox {
+            float: right;
+            width: 280px;
+            margin: 0 0 1rem 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg-secondary);
+            font-size: 13px;
+        }
+
+        .infobox-title {
+            background: var(--border);
+            padding: 8px 12px;
+            font-weight: 600;
+            font-size: 15px;
+            text-align: center;
+            font-family: var(--font-serif);
+        }
+
+        .infobox-image {
+            width: 100%;
+            padding: 8px;
+        }
+
+        .infobox-image img {
+            width: 100%;
+            border-radius: var(--radius);
+            display: block;
+        }
+
+        .infobox-image-placeholder {
+            width: 100%;
+            height: 180px;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--text-muted);
+            border-radius: var(--radius);
+        }
+
+        .infobox-row {
+            padding: 4px 12px;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            gap: 8px;
+        }
+
+        .infobox-label {
+            font-weight: 600;
+            min-width: 70px;
+            color: var(--text-secondary);
+        }
+
+        .infobox-value {
+            color: var(--text);
+        }
+
+        .detail-body {
+            overflow: hidden;
+        }
+
+        .detail-desc {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* ANSWERS */
+        .answer-card {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            background: var(--bg-card);
+            font-size: 13.5px;
+        }
+
+        .answer-by {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .answer-text {
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .answer-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .vote-btn {
+            background: none;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            cursor: pointer;
+            padding: 2px 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .vote-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text);
+        }
+
+        .vote-score {
+            font-size: 12.5px;
+            font-weight: 600;
+            min-width: 16px;
+            text-align: center;
+        }
+
+        .vote-positive {
+            color: var(--success);
+        }
+
+        .vote-negative {
+            color: var(--danger);
+        }
+
+        .report-link {
+            font-size: 11px;
+            color: var(--text-muted);
+            cursor: pointer;
+            margin-left: auto;
+            border: none;
+            background: none;
+            font-family: var(--font-sans);
+        }
+
+        .report-link:hover {
+            color: var(--danger);
+            text-decoration: underline;
+        }
+
+        /* STATUS BADGES */
+        .badge {
+            display: inline-block;
+            padding: 1px 8px;
+            border-radius: var(--radius);
+            font-size: 11.5px;
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: #fef3cd;
+            color: var(--warning);
+            border: 1px solid #ffc107;
+        }
+
+        .badge-approved {
+            background: #d4edda;
+            color: var(--success);
+            border: 1px solid #28a745;
+        }
+
+        .badge-hidden {
+            background: #f8d7da;
+            color: var(--danger);
+            border: 1px solid #dc3545;
+        }
+
+        [data-theme="dark"] .badge-pending {
+            background: #3a3520;
+            border-color: #665c20;
+        }
+
+        [data-theme="dark"] .badge-approved {
+            background: #1a3a2a;
+            border-color: #2a6a3a;
+        }
+
+        [data-theme="dark"] .badge-hidden {
+            background: #3a1a1a;
+            border-color: #6a2a2a;
+        }
+
+        /* FORMS */
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 7px 10px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--font-sans);
+            font-size: 13.5px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(51, 102, 204, 0.12);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-hint {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: var(--radius);
+            color: #fff;
+            font-family: var(--font-sans);
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border-color: var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger-hover);
+        }
+
+        .btn-sm {
+            padding: 3px 10px;
+            font-size: 12px;
+        }
+
+        .form-link {
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ALERTS */
+        .alert {
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            font-size: 13px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: var(--danger);
+        }
+
+        [data-theme="dark"] .alert-success {
+            background: #1a3a2a;
+            border-color: #2a6a3a;
+        }
+
+        [data-theme="dark"] .alert-error {
+            background: #3a1a1a;
+            border-color: #6a2a2a;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-title {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: 0.75rem;
+        }
+
+        /* ADMIN */
+        .admin-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 1rem;
+        }
+
+        .admin-tab {
+            padding: 8px 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .admin-tab:hover {
+            color: var(--text);
+        }
+
+        .admin-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-box {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 10px;
+            text-align: center;
+            background: var(--bg-secondary);
+        }
+
+        .stat-num {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-lbl {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .admin-item {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 10px;
+            margin-bottom: 6px;
+            background: var(--bg-card);
+        }
+
+        .admin-item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .admin-btns {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        /* IMAGE UPLOAD */
+        .upload-area {
+            border: 2px dashed var(--border-light);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 0.75rem;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+            background: rgba(51, 102, 204, 0.03);
+        }
+
+        .upload-area img {
+            max-width: 140px;
+            max-height: 140px;
+            border-radius: var(--radius);
+        }
+
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        /* LEGAL */
+        .legal h1 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .legal h2 {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            font-weight: 400;
+            margin: 1.25rem 0 0.5rem;
+            color: var(--text);
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 2px;
+        }
+
+        .legal p {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            line-height: 1.7;
+        }
+
+        .legal ul {
+            margin: 0.35rem 0 0.5rem 1.25rem;
+            color: var(--text-secondary);
+            font-size: 13.5px;
+        }
+
+        .legal li {
+            margin-bottom: 2px;
+        }
+
+        /* EMPTY */
+        .empty {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--text-muted);
+            font-size: 13.5px;
+        }
+
+        .empty-icon {
+            margin-bottom: 0.75rem;
+        }
+
+        .empty-icon svg {
+            width: 48px;
+            height: 48px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.5;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-light);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* TOAST */
+        .toast-box {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .toast {
+            padding: 8px 14px;
+            border-radius: var(--radius);
+            font-size: 13px;
+            box-shadow: var(--shadow);
+            animation: slideIn 0.25s ease;
+            max-width: 300px;
+        }
+
+        .toast-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .toast-error {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* PAGINATION */
+        .pagination {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 4px 10px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            cursor: pointer;
+            font-size: 12.5px;
+            color: var(--text);
+            font-family: var(--font-sans);
+            transition: var(--transition);
+        }
+
+        .page-btn:hover {
+            background: var(--bg-secondary);
+        }
+
+        .page-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-light);
+            padding: 1.25rem 1rem;
+            margin-top: 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-disclaimer {
+            background: var(--highlight);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            margin-bottom: 0.75rem;
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .footer-copy {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-inner {
+                padding: 0 0.75rem;
+                gap: 0.5rem;
+            }
+
+            .header-search {
+                max-width: 200px;
+            }
+
+            .logo-sub {
+                display: none;
+            }
+
+            .nav-btn {
+                padding: 4px 8px;
+                font-size: 11.5px;
+            }
+
+            .main-wrapper {
+                padding: 0.75rem;
+            }
+
+            .content-box {
+                padding: 1rem;
+            }
+
+            .infobox {
+                float: none;
+                width: 100%;
+                margin: 0 0 1rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-search {
+                display: none;
+            }
+
+            .header-inner {
+                height: 48px;
+            }
+
+            .logo-not,
+            .logo-wiki {
+                font-size: 1.3rem;
+            }
+
+            .admin-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .person-card {
+                flex-direction: column;
+            }
+
+            .person-thumb,
+            .person-thumb-placeholder {
+                width: 100%;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo" onclick="App.navigate('home')">
+                <span class="logo-not">Not</span><span class="logo-wiki">Wiki</span>
+                <span class="logo-sub">özgür olmayan encyclopedi</span>
+            </div>
+            <div class="header-search">
+                <input type="text" id="search-input" placeholder="Gönderi ara..."
+                    onkeydown="if(event.key==='Enter')App.searchPersons()">
+                <button class="header-search-btn" onclick="App.searchPersons()" title="Ara"><svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg></button>
+            </div>
+            <div class="nav" id="nav-container"></div>
+            <button class="theme-toggle" id="theme-toggle" onclick="App.toggleTheme()" title="Tema değiştir"></button>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <!-- HOME -->
+        <section id="section-home" class="section">
+            <div class="content-box">
+                <h1 class="wiki-heading">Son Eklenen Profiller</h1>
+                <div class="mobile-search" style="margin-bottom:0.75rem;display:none">
+                    <div style="display:flex;gap:4px">
+                        <input type="text" class="form-input" id="mobile-search-input" placeholder="Gönderi ara...">
+                        <button class="btn btn-sm" onclick="App.mobileSearch()">Ara</button>
+                    </div>
+                </div>
+                <div id="persons-list" class="person-list"></div>
+                <div id="persons-pagination"></div>
+            </div>
+        </section>
+
+        <section id="section-login" class="section">
+            <div class="content-box form-container">
+                <h1 class="wiki-heading">Giriş Yap</h1>
+                <div id="login-alert" class="alert"></div>
+                <form id="login-form" onsubmit="App.handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">E-posta Adresi</label>
+                        <input type="email" class="form-input" id="login-email" required autocomplete="email"
+                            placeholder="ornek@mail.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Şifre</label>
+                        <input type="password" class="form-input" id="login-password" required
+                            autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-block" id="login-btn">Giriş Yap</button>
+                </form>
+                <p class="form-link">Hesabınız yok mu? <a href="#register">Kayıt olun</a></p>
+            </div>
+        </section>
+
+        <section id="section-register" class="section">
+            <div class="content-box form-container">
+                <h1 class="wiki-heading">Kayıt Ol</h1>
+                <div id="register-alert" class="alert"></div>
+                <form id="register-form" onsubmit="App.handleRegister(event)">
+                    <div class="form-group">
+                        <label class="form-label">E-posta Adresi</label>
+                        <input type="email" class="form-input" id="register-email" required autocomplete="email"
+                            placeholder="ornek@mail.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kullanıcı Adı</label>
+                        <input type="text" class="form-input" id="register-username" required autocomplete="username"
+                            minlength="3" maxlength="20">
+                        <p class="form-hint">3-20 karakter, harf, rakam ve alt çizgi</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Şifre</label>
+                        <input type="password" class="form-input" id="register-password" required minlength="8"
+                            autocomplete="new-password">
+                        <p class="form-hint">En az 8 karakter</p>
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:flex-start;gap:6px">
+                        <input type="checkbox" id="register-terms" required style="margin-top:3px">
+                        <label for="register-terms" style="font-size:12.5px;color:var(--text-secondary)">
+                            <a href="#terms">Kullanım Şartları</a>, <a href="#privacy">Gizlilik Politikası</a> ve <a
+                                href="#kvkk">KVKK Aydınlatma Metni</a>'ni okudum, kabul ediyorum.
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-block" id="register-btn">Kayıt Ol</button>
+                </form>
+                <p class="form-link">Zaten hesabınız var mı? <a href="#login">Giriş yapın</a></p>
+            </div>
+        </section>
+
+        <!-- CREATE PERSON -->
+        <section id="section-create" class="section">
+            <div class="content-box" style="max-width:560px;margin:0 auto">
+                <h1 class="wiki-heading">Yeni Profil Oluştur</h1>
+                <div id="create-alert" class="alert"></div>
+                <form id="create-form" onsubmit="App.handleCreatePerson(event)">
+                    <div class="form-group">
+                        <label class="form-label">İsim</label>
+                        <input type="text" class="form-input" id="create-name" required minlength="2" maxlength="100"
+                            placeholder="Kişi veya karakter adı">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Resim (isteğe bağlı)</label>
+                        <div class="upload-area" id="upload-area"
+                            onclick="document.getElementById('create-image').click()">
+                            <svg viewBox="0 0 24 24"
+                                style="width:32px;height:32px;stroke:var(--text-muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:4px">
+                                <path
+                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                                <circle cx="12" cy="13" r="4" />
+                            </svg>
+                            <p style="font-size:13px;color:var(--text-secondary)">Resim yüklemek için tıklayın</p>
+                            <p style="font-size:11px;color:var(--text-muted)">JPEG, PNG, WebP, GIF — Maks. 5MB</p>
+                            <input type="file" id="create-image" accept="image/jpeg,image/png,image/webp,image/gif"
+                                onchange="App.handleImagePreview(event)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Parodi Açıklama</label>
+                        <textarea class="form-textarea" id="create-description" required minlength="10" maxlength="500"
+                            placeholder="Kısa ve eğlenceli bir parodi açıklama..."></textarea>
+                        <p class="form-hint">10-500 karakter. Hakaret ve küfür yasaktır.</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kişi Türü</label>
+                        <select class="form-select" id="create-public-figure">
+                            <option value="1">Kamusal / tanınmış kişi</option>
+                            <option value="0">Kurgusal karakter</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-block" id="create-btn">Profili Oluştur</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- PERSON DETAIL -->
+        <section id="section-person" class="section">
+            <div class="content-box" id="person-detail"></div>
+        </section>
+
+        <!-- MY POSTS -->
+        <section id="section-myposts" class="section">
+            <div class="content-box">
+                <h1 class="wiki-heading">Gönderilerim</h1>
+                <div id="myposts-list"></div>
+            </div>
+        </section>
+
+        <!-- ADMIN -->
+        <section id="section-admin" class="section">
+            <div class="content-box">
+                <h1 class="wiki-heading">Yönetim Paneli</h1>
+                <div id="admin-stats" class="admin-stats"></div>
+                <div class="admin-tabs" id="admin-tabs">
+                    <button class="admin-tab active" data-tab="pending"
+                        onclick="App.switchAdminTab('pending')">Bekleyenler</button>
+                    <button class="admin-tab" data-tab="reports"
+                        onclick="App.switchAdminTab('reports')">Raporlar</button>
+                    <button class="admin-tab" data-tab="users"
+                        onclick="App.switchAdminTab('users')">Kullanıcılar</button>
+                    <button class="admin-tab" data-tab="allposts" onclick="App.switchAdminTab('allposts')">Tüm
+                        Gönderiler</button>
+                </div>
+                <div id="admin-content"></div>
+            </div>
+        </section>
+
+        <!-- TERMS -->
+        <section id="section-terms" class="section">
+            <div class="content-box legal">
+                <h1>Kullanım Şartları</h1>
+                <p><strong>Son güncelleme:</strong> 15 Şubat 2026</p>
+                <h2>1. Genel Bilgiler</h2>
+                <p>NotWiki, kullanıcılar tarafından oluşturulan parodi ve mizah amaçlı içeriklerin paylaşıldığı bir
+                    platformdur. Platform üzerindeki hiçbir içerik gerçek, doğru veya güvenilir bilgi kaynağı olarak
+                    kabul edilemez. Tüm içerikler tamamen eğlence ve parodi amacıyla sunulmaktadır.</p>
+                <h2>2. Kullanıcı Sorumlulukları</h2>
+                <p>Kullanıcılar, oluşturdukları tüm içeriklerin sorumluluğunu tam olarak kabul eder:</p>
+                <ul>
+                    <li>Hakaret, aşağılama, nefret söylemi veya iftira içeren içerik oluşturmak yasaktır.</li>
+                    <li>Küfür ve argo kullanımı yasaktır.</li>
+                    <li>Gerçek kişileri karalayıcı veya itibar zedeleyici içerik yasaktır.</li>
+                    <li>Özel hayatın gizliliğini ihlal eden içerik paylaşımı yasaktır.</li>
+                    <li>Müstehcen veya yasa dışı içerik paylaşımı yasaktır.</li>
+                </ul>
+                <h2>3. İçerik Politikası</h2>
+                <p>Tüm içerikler moderasyon sürecine tabidir. Platform, herhangi bir içeriği önceden bildirim
+                    yapmaksızın kaldırma, düzenleme veya erişimi kısıtlama hakkını saklı tutar. İçerikler parodi ve
+                    hiciv kapsamında değerlendirilir. Türk Ceza Kanunu ve ilgili mevzuat hükümleri saklıdır.</p>
+                <h2>4. Hesap Yönetimi</h2>
+                <p>Platform, aşağıdaki durumlarda kullanıcı hesabını askıya alabilir:</p>
+                <ul>
+                    <li>Kullanım şartlarının ihlali</li>
+                    <li>Spam veya kötüye kullanım</li>
+                    <li>Tekrarlanan şikâyetler</li>
+                    <li>Yasadışı faaliyetler</li>
+                </ul>
+                <h2>5. Fikri Mülkiyet</h2>
+                <p>Kullanıcılar, yükledikleri içeriklerin telif haklarına sahip olduklarını veya kullanma izinlerinin
+                    bulunduğunu beyan eder. Telif hakkı ihlalleri nedeniyle doğacak tüm sorumluluk içeriği yükleyen
+                    kullanıcıya aittir.</p>
+                <h2>6. Sorumluluk Reddi</h2>
+                <p>NotWiki, kullanıcılar tarafından oluşturulan içeriklerden dolayı hiçbir sorumluluk kabul etmez.
+                    Platform yalnızca bir barındırma hizmeti sağlar. 5651 sayılı Kanun kapsamında yer sağlayıcı olarak
+                    hareket eder.</p>
+                <h2>7. Değişiklikler</h2>
+                <p>Kullanım şartları önceden bildirim yapılmaksızın güncellenebilir. Platformu kullanmaya devam etmeniz,
+                    güncellenmiş şartları kabul ettiğiniz anlamına gelir.</p>
+            </div>
+        </section>
+
+        <!-- PRIVACY -->
+        <section id="section-privacy" class="section">
+            <div class="content-box legal">
+                <h1>Gizlilik Politikası</h1>
+                <p><strong>Son güncelleme:</strong> 15 Şubat 2026</p>
+                <h2>1. Toplanan Veriler</h2>
+                <ul>
+                    <li><strong>Hesap bilgileri:</strong> Kullanıcı adı, şifreli parola</li>
+                    <li><strong>İçerik verileri:</strong> Oluşturduğunuz profiller, yanıtlar ve raporlar</li>
+                    <li><strong>Teknik veriler:</strong> IP adresi, tarayıcı bilgileri, erişim zamanları</li>
+                </ul>
+                <h2>2. Verilerin Kullanımı</h2>
+                <ul>
+                    <li>Hesabınızın kimlik doğrulaması</li>
+                    <li>Platform güvenliğinin sağlanması</li>
+                    <li>İçerik moderasyonu ve kötüye kullanım tespiti</li>
+                    <li>Hizmet kalitesinin iyileştirilmesi</li>
+                </ul>
+                <h2>3. Verilerin Paylaşımı</h2>
+                <p>Kişisel verileriniz üçüncü taraflarla paylaşılmaz. Yalnızca yasal zorunluluk durumlarında yetkili
+                    makamlarla paylaşılabilir.</p>
+                <h2>4. Veri Güvenliği</h2>
+                <p>Şifreler PBKDF2 algoritması ile hash'lenir ve düz metin olarak saklanmaz. Tüm iletişim HTTPS
+                    üzerinden gerçekleşir.</p>
+                <h2>5. Çerezler ve Yerel Depolama</h2>
+                <p>Platform, kimlik doğrulama için JWT token kullanır ve tarayıcının localStorage alanında saklar.
+                    Üçüncü taraf izleme çerezleri kullanılmaz.</p>
+                <h2>6. Haklarınız</h2>
+                <p>6698 sayılı KVKK kapsamındaki haklarınız için KVKK Aydınlatma Metni'ne bakınız.</p>
+                <h2>7. İletişim</h2>
+                <p>info@notwiki.com</p>
+            </div>
+        </section>
+
+        <!-- KVKK -->
+        <section id="section-kvkk" class="section">
+            <div class="content-box legal">
+                <h1>KVKK Aydınlatma Metni</h1>
+                <p><strong>Son güncelleme:</strong> 15 Şubat 2026</p>
+                <p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, NotWiki platformu olarak kişisel
+                    verilerinizin işlenmesine ilişkin sizi bilgilendirmek isteriz.</p>
+
+                <h2>1. Veri Sorumlusu</h2>
+                <p>NotWiki platformu, kişisel verileriniz bakımından veri sorumlusu sıfatıyla hareket etmektedir.</p>
+
+                <h2>2. İşlenen Kişisel Veriler</h2>
+                <ul>
+                    <li><strong>Kimlik bilgileri:</strong> Kullanıcı adı</li>
+                    <li><strong>İşlem güvenliği bilgileri:</strong> Şifreli parola (hash), IP adresi, oturum bilgileri
+                    </li>
+                    <li><strong>İçerik verileri:</strong> Platform üzerinde oluşturduğunuz profiller, yanıtlar, oylar ve
+                        raporlar</li>
+                    <li><strong>Log kayıtları:</strong> Erişim zamanı, tarayıcı bilgileri</li>
+                </ul>
+
+                <h2>3. Kişisel Verilerin İşlenme Amaçları</h2>
+                <ul>
+                    <li>Üyelik oluşturma ve kimlik doğrulama işlemlerinin yürütülmesi</li>
+                    <li>Platform hizmetlerinin sunulması ve iyileştirilmesi</li>
+                    <li>İçerik moderasyonu ve topluluk kurallarının uygulanması</li>
+                    <li>Bilgi güvenliği süreçlerinin yürütülmesi</li>
+                    <li>5651 sayılı Kanun kapsamında yasal yükümlülüklerin yerine getirilmesi</li>
+                    <li>Kötüye kullanım, spam ve dolandırıcılığın önlenmesi</li>
+                </ul>
+
+                <h2>4. Kişisel Verilerin İşlenme Hukuki Sebepleri</h2>
+                <ul>
+                    <li>KVKK m.5/2(a): Kanunlarda açıkça öngörülmesi (5651 sayılı Kanun)</li>
+                    <li>KVKK m.5/2(c): Sözleşmenin kurulması veya ifası</li>
+                    <li>KVKK m.5/2(ç): Veri sorumlusunun hukuki yükümlülüğü</li>
+                    <li>KVKK m.5/2(f): Meşru menfaat (platform güvenliği)</li>
+                </ul>
+
+                <h2>5. Kişisel Verilerin Aktarılması</h2>
+                <p>Kişisel verileriniz üçüncü kişilerle paylaşılmaz. Yalnızca aşağıdaki hallerde aktarım yapılabilir:
+                </p>
+                <ul>
+                    <li>Yasal zorunluluk halinde yetkili kamu kurum ve kuruluşlarına</li>
+                    <li>Mahkeme kararı veya savcılık talebi üzerine adli makamlara</li>
+                </ul>
+
+                <h2>6. Kişisel Verilerin Saklanma Süresi</h2>
+                <p>Kişisel verileriniz, hesabınız aktif olduğu sürece saklanır. Hesabınızın silinmesi halinde, yasal
+                    saklama yükümlülükleri (5651 sayılı Kanun uyarınca 2 yıl) saklı kalmak kaydıyla verileriniz silinir
+                    veya anonim hale getirilir.</p>
+
+                <h2>7. Veri Sahibi Olarak Haklarınız</h2>
+                <p>KVKK'nın 11. maddesi uyarınca aşağıdaki haklara sahipsiniz:</p>
+                <ul>
+                    <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme</li>
+                    <li>Kişisel verileriniz işlenmişse buna ilişkin bilgi talep etme</li>
+                    <li>Kişisel verilerinizin işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını
+                        öğrenme</li>
+                    <li>Yurt içinde veya yurt dışında kişisel verilerinizin aktarıldığı üçüncü kişileri bilme</li>
+                    <li>Kişisel verilerinizin eksik veya yanlış işlenmiş olması hâlinde bunların düzeltilmesini isteme
+                    </li>
+                    <li>KVKK m.7 kapsamında kişisel verilerinizin silinmesini veya yok edilmesini isteme</li>
+                    <li>Düzeltme ve silme işlemlerinin verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme</li>
+                    <li>İşlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle aleyhinize
+                        bir sonucun ortaya çıkmasına itiraz etme</li>
+                    <li>Kişisel verilerin kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız hâlinde zararın
+                        giderilmesini talep etme</li>
+                </ul>
+
+                <h2>8. Başvuru Yöntemi</h2>
+                <p>Yukarıdaki haklarınıza ilişkin taleplerinizi <strong>info@notwiki.com</strong> adresine kimliğinizi
+                    tespit edici bilgilerle birlikte yazılı olarak iletebilirsiniz. Talepleriniz en geç 30 gün içinde
+                    ücretsiz olarak cevaplanacaktır.</p>
+
+                <h2>9. Veri Güvenliği Tedbirleri</h2>
+                <ul>
+                    <li>Şifreler PBKDF2 algoritması ile kriptografik olarak korunmaktadır</li>
+                    <li>Tüm veri iletimi SSL/TLS şifrelemesi ile güvence altındadır</li>
+                    <li>Erişim yetkilendirme mekanizmaları uygulanmaktadır</li>
+                    <li>Düzenli güvenlik değerlendirmeleri yapılmaktadır</li>
+                    <li>Rate limiting ile kaba kuvvet saldırıları engellenmektedir</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- VERIFY EMAIL -->
+        <section id="section-verify" class="section">
+            <div class="content-box form-container" style="text-align:center">
+                <h1 class="wiki-heading">Doğrulama</h1>
+                <div id="verify-alert" class="alert"></div>
+                <p id="verify-status" style="color:var(--text-secondary)">Doğrulanıyor...</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- REPORT MODAL -->
+    <div class="modal-overlay" id="report-modal">
+        <div class="modal">
+            <h2 class="modal-title">İçeriği Raporla</h2>
+            <div class="form-group">
+                <label class="form-label">Sebep</label>
+                <textarea class="form-textarea" id="report-reason" placeholder="Bu içeriği neden raporluyorsunuz?"
+                    minlength="5" maxlength="500"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="App.closeReportModal()">İptal</button>
+                <button class="btn" onclick="App.submitReport()">Raporla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRM MODAL -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal">
+            <h2 class="modal-title">Silme Onayı</h2>
+            <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:0.75rem">Bu gönderiyi silmek
+                istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="App.closeDeleteModal()">İptal</button>
+                <button class="btn btn-danger" onclick="App.confirmDelete()">Sil</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-box" id="toast-container"></div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-disclaimer">
+                ⚠️ <strong>Yasal Uyarı:</strong> Bu platform tamamen parodi ve mizah amaçlıdır. Tüm içerikler
+                kullanıcılar tarafından oluşturulmuştur.
+                Platform, içeriklerin doğruluğu konusunda hiçbir garanti vermez ve gerçek bilgi kaynağı olarak
+                kullanılamaz.
+                İçerikler 5846 sayılı Fikir ve Sanat Eserleri Kanunu'nun parodi istisnası kapsamında değerlendirilir.
+                Hakaret, iftira ve kişilik haklarına saldırı niteliğindeki içerikler Türk Ceza Kanunu'nun ilgili
+                hükümleri çerçevesinde değerlendirilir.
+            </div>
+            <div class="footer-links">
+                <a href="#terms">Kullanım Şartları</a>
+                <a href="#privacy">Gizlilik Politikası</a>
+                <a href="#kvkk">KVKK Aydınlatma Metni</a>
+            </div>
+            <p class="footer-copy">© 2026 NotWiki — Parodi Bilgi Platformu. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Backend URL (Kullanıcının sağladığı Worker adresi)
+        const API_BASE = 'https://notwiki.notwiki1.workers.dev';
+
+        const App = {
+            user: null,
+            currentPage: 'home',
+            reportTarget: null,
+            deleteTarget: null,
+
+            async init() {
+                this.loadTheme();
+                const token = localStorage.getItem('nw_token');
+                if (token) {
+                    try {
+                        const res = await this.api('GET', '/api/auth/me');
+                        if (res.user) this.user = res.user;
+                        else localStorage.removeItem('nw_token');
+                    } catch { localStorage.removeItem('nw_token'); }
+                }
+                this.updateNav();
+                this.updateMobileSearch();
+                window.addEventListener('hashchange', () => this.handleRoute());
+                this.handleRoute();
+            },
+
+            loadTheme() {
+                const saved = localStorage.getItem('nw_theme') || 'light';
+                if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+                else document.documentElement.removeAttribute('data-theme');
+                const btn = document.getElementById('theme-toggle');
+                if (btn) {
+                    btn.innerHTML = saved === 'dark'
+                        ? '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+                        : '<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+                }
+            },
+
+            toggleTheme() {
+                const current = localStorage.getItem('nw_theme') || 'light';
+                const next = current === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('nw_theme', next);
+                this.loadTheme();
+            },
+
+            updateNav() {
+                const nav = document.getElementById('nav-container');
+                if (this.user) {
+                    let items = `<button class="nav-btn primary" onclick="App.navigate('create')">+ Yeni</button>`;
+                    items += `<button class="nav-btn" onclick="App.navigate('myposts')">Gönderilerim</button>`;
+                    if (this.user.role === 'admin') {
+                        items += `<button class="nav-btn" onclick="App.navigate('admin')">Yönetim</button>`;
+                    }
+                    items += `<button class="nav-btn danger" onclick="App.logout()">Çıkış</button>`;
+                    nav.innerHTML = items;
+                } else {
+                    nav.innerHTML = `
+                <button class="nav-btn" onclick="App.navigate('login')">Giriş</button>
+                <button class="nav-btn primary" onclick="App.navigate('register')">Kayıt Ol</button>
+              `;
+                }
+            },
+
+            updateMobileSearch() {
+                const el = document.querySelector('.mobile-search');
+                if (el && window.innerWidth <= 480) el.style.display = 'block';
+            },
+
+            navigate(page) { window.location.hash = page; },
+
+            handleRoute() {
+                const hash = window.location.hash.slice(1) || 'home';
+                const parts = hash.split('/');
+                const page = parts[0];
+                const param = parts[1];
+
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+
+                switch (page) {
+                    case 'home':
+                        document.getElementById('section-home').classList.add('active');
+                        this.loadPersons();
+                        break;
+                    case 'login':
+                        if (this.user) { this.navigate('home'); return; }
+                        document.getElementById('section-login').classList.add('active');
+                        break;
+                    case 'register':
+                        if (this.user) { this.navigate('home'); return; }
+                        document.getElementById('section-register').classList.add('active');
+                        break;
+                    case 'create':
+                        if (!this.user) { this.navigate('login'); return; }
+                        document.getElementById('section-create').classList.add('active');
+                        break;
+                    case 'person':
+                        document.getElementById('section-person').classList.add('active');
+                        if (param) this.loadPerson(param);
+                        break;
+                    case 'myposts':
+                        if (!this.user) { this.navigate('login'); return; }
+                        document.getElementById('section-myposts').classList.add('active');
+                        this.loadMyPosts();
+                        break;
+                    case 'admin':
+                        if (!this.user || this.user.role !== 'admin') { this.navigate('home'); return; }
+                        document.getElementById('section-admin').classList.add('active');
+                        this.loadAdminPanel();
+                        break;
+                    case 'terms':
+                        document.getElementById('section-terms').classList.add('active');
+                        break;
+                    case 'privacy':
+                        document.getElementById('section-privacy').classList.add('active');
+                        break;
+
+
+                    default:
+                        document.getElementById('section-home').classList.add('active');
+                        this.loadPersons();
+                }
+                this.currentPage = page;
+                window.scrollTo(0, 0);
+            },
+
+            async api(method, path, body) {
+                const headers = { 'Content-Type': 'application/json' };
+                const token = localStorage.getItem('nw_token');
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+                const opts = { method, headers };
+                if (body && method !== 'GET') opts.body = JSON.stringify(body);
+                const res = await fetch(`${API_BASE}${path}`, opts);
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Bir hata oluştu.');
+                return data;
+            },
+
+            async apiRaw(method, path, body, contentType) {
+                const headers = {};
+                const token = localStorage.getItem('nw_token');
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+                if (contentType) headers['Content-Type'] = contentType;
+                const res = await fetch(`${API_BASE}${path}`, { method, headers, body });
+                if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    throw new Error(data.error || 'Yükleme hatası.');
+                }
+                return res.json();
+            },
+
+            showAlert(id, message, type) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.className = `alert show alert-${type}`;
+                el.textContent = message;
+                setTimeout(() => el.classList.remove('show'), 5000);
+            },
+
+            toast(message, type = 'success') {
+                const c = document.getElementById('toast-container');
+                const t = document.createElement('div');
+                t.className = `toast toast-${type}`;
+                t.textContent = message;
+                c.appendChild(t);
+                setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3000);
+            },
+
+            async handleLogin(e) {
+                e.preventDefault();
+                const btn = document.getElementById('login-btn');
+                btn.disabled = true;
+                btn.textContent = 'Giriş yapılıyor...';
+                try {
+                    const email = document.getElementById('login-email').value;
+                    const password = document.getElementById('login-password').value;
+                    const data = await this.api('POST', '/api/auth/login', { email, password });
+                    localStorage.setItem('nw_token', data.token);
+                    this.user = data.user;
+                    this.updateNav();
+                    this.toast('Tekrar hoş geldiniz! Yönlendiriliyorsunuz...');
+                    this.navigate('home');
+                } catch (err) {
+                    this.showAlert('login-alert', err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Giriş Yap';
+                }
+            },
+
+            async handleRegister(e) {
+                e.preventDefault();
+                const btn = document.getElementById('register-btn');
+                btn.disabled = true;
+                btn.textContent = 'Kayıt yapılıyor...';
+                try {
+                    const email = document.getElementById('register-email').value;
+                    const username = document.getElementById('register-username').value;
+                    const password = document.getElementById('register-password').value;
+                    const terms = document.getElementById('register-terms').checked;
+                    if (!terms) throw new Error('Kullanım şartlarını kabul etmelisiniz.');
+                    const data = await this.api('POST', '/api/auth/register', { email, username, password });
+                    this.showAlert('register-alert', 'Hesabınız başarıyla oluşturuldu! Artık giriş yapabilirsiniz.', 'success');
+                    document.getElementById('register-form').reset();
+                } catch (err) {
+                    this.showAlert('register-alert', err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Kayıt Ol';
+                }
+            },
+
+            logout() {
+                localStorage.removeItem('nw_token');
+                this.user = null;
+                this.updateNav();
+                this.toast('Oturumunuz sonlandırıldı. Görüşürüz!');
+                this.navigate('home');
+            },
+
+
+
+            searchPersons() {
+                const q = document.getElementById('search-input')?.value || '';
+                this.loadPersons(1, q);
+            },
+
+            mobileSearch() {
+                const q = document.getElementById('mobile-search-input')?.value || '';
+                this.loadPersons(1, q);
+            },
+
+            async loadPersons(page = 1, search) {
+                const list = document.getElementById('persons-list');
+                list.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                try {
+                    if (search === undefined) search = document.getElementById('search-input')?.value || '';
+                    const params = new URLSearchParams({ page, limit: 20 });
+                    if (search) params.set('q', search);
+                    const data = await this.api('GET', `/api/persons?${params}`);
+                    if (data.persons.length === 0) {
+                        list.innerHTML = `<div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><p>${search ? 'Aramanızla eşleşen gönderi bulunamadı. Farklı bir terim deneyin.' : 'Henüz hiçbir profil oluşturulmamış. İlk katkıyı siz yapın!'}</p></div>`;
+                        document.getElementById('persons-pagination').innerHTML = '';
+                        return;
+                    }
+                    list.innerHTML = data.persons.map(p => this.renderPersonCard(p)).join('');
+                    this.renderPagination(data.pagination, search);
+                } catch (err) {
+                    list.innerHTML = `<div class="empty"><p>${err.message}</p></div>`;
+                }
+            },
+
+            renderPersonCard(p) {
+                const img = p.image_url
+                    ? `<img class="person-thumb" src="${API_BASE}${p.image_url}" alt="${this.esc(p.name)}" loading="lazy">`
+                    : `<div class="person-thumb-placeholder"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:var(--text-muted);fill:none;stroke-width:1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>`;
+                return `
+              <article class="person-card" onclick="App.navigate('person/${p.id}')">
+                ${img}
+                <div class="person-card-body">
+                  <div class="person-card-name">${this.esc(p.name)}</div>
+                  <div class="person-card-desc">${this.esc(p.description)}</div>
+                  <div class="person-card-meta">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
+                </div>
+              </article>`;
+            },
+
+            renderPagination(pg, search) {
+                const el = document.getElementById('persons-pagination');
+                if (pg.pages <= 1) { el.innerHTML = ''; return; }
+                let html = '<div class="pagination">';
+                for (let i = 1; i <= pg.pages; i++) {
+                    html += `<button class="page-btn${i === pg.page ? ' active' : ''}" onclick="App.loadPersons(${i},'${(search || '').replace(/'/g, "\\'")}')">${i}</button>`;
+                }
+                html += '</div>';
+                el.innerHTML = html;
+            },
+
+            async loadPerson(id) {
+                const c = document.getElementById('person-detail');
+                c.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                try {
+                    const data = await this.api('GET', `/api/persons/${id}`);
+                    const p = data.person;
+                    const answers = data.answers;
+
+                    const img = p.image_url
+                        ? `<div class="infobox-image"><img src="${API_BASE}${p.image_url}" alt="${this.esc(p.name)}"></div>`
+                        : `<div class="infobox-image"><div class="infobox-image-placeholder"><svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:var(--text-muted);fill:none;stroke-width:1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div></div>`;
+
+                    let badge = '';
+                    if (p.visibility_status !== 'approved') {
+                        const cls = p.visibility_status === 'pending' ? 'badge-pending' : 'badge-hidden';
+                        const lbl = p.visibility_status === 'pending' ? 'Onay Bekliyor' : 'Gizli';
+                        badge = ` <span class="badge ${cls}">${lbl}</span>`;
+                    }
+
+                    const canDelete = this.user && (this.user.id === p.created_by || this.user.role === 'admin');
+
+                    c.innerHTML = `
+                <div class="infobox">
+                  <div class="infobox-title">${this.esc(p.name)}</div>
+                  ${img}
+                  <div class="infobox-row"><span class="infobox-label">Ekleyen</span><span class="infobox-value">@${this.esc(p.creator_username)}</span></div>
+                  <div class="infobox-row"><span class="infobox-label">Tarih</span><span class="infobox-value">${this.formatDate(p.created_at)}</span></div>
+                  <div class="infobox-row"><span class="infobox-label">Tür</span><span class="infobox-value">${p.is_public_figure ? 'Kamusal kişi' : 'Kurgusal'}</span></div>
+                  <div class="infobox-row"><span class="infobox-label">Durum</span><span class="infobox-value">${badge || '<span class="badge badge-approved">Onaylı</span>'}</span></div>
+                </div>
+                <div class="detail-body">
+                  <h1 class="wiki-heading">${this.esc(p.name)}${badge}</h1>
+                  <p class="detail-desc">${this.esc(p.description)}</p>
+                  <div class="detail-actions">
+                    <button class="btn btn-sm btn-secondary" onclick="App.openReportModal('person',${p.id})"><svg viewBox="0 0 24 24" class="icon-inline"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> Raporla</button>
+                    ${canDelete ? `<button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})"><svg viewBox="0 0 24 24" class="icon-inline"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Sil</button>` : ''}
+                  </div>
+        
+                  <h2 class="wiki-heading-sm">Bu kim?</h2>
+                  ${this.user ? `
+                    <form onsubmit="App.submitAnswer(event, ${p.id})" style="margin-bottom:0.75rem">
+                      <div style="display:flex;gap:6px">
+                        <input type="text" class="form-input" id="answer-input" placeholder="Kısa ve eğlenceli bir yanıt..." minlength="3" maxlength="300" required>
+                        <button type="submit" class="btn btn-sm">Gönder</button>
+                      </div>
+                    </form>
+                  ` : '<p style="color:var(--text-muted);font-size:13px;margin-bottom:0.75rem">Yanıt eklemek için <a href="#login">giriş yapın</a>.</p>'}
+                  <div id="answers-list">
+                    ${answers.length === 0
+                            ? '<div class="empty" style="padding:1rem"><p>Henüz kimse yanıt vermemiş. İlk yanıtı siz yazın!</p></div>'
+                            : answers.map(a => this.renderAnswer(a, p.created_by)).join('')}
+                  </div>
+                </div>`;
+                } catch (err) {
+                    c.innerHTML = `<div class="empty"><p>${err.message}</p></div>`;
+                }
+            },
+
+            renderAnswer(a, personCreatedBy) {
+                const sc = a.vote_score > 0 ? 'vote-positive' : a.vote_score < 0 ? 'vote-negative' : '';
+                const canDel = this.user && (this.user.id === a.created_by || this.user.role === 'admin');
+                return `
+              <div class="answer-card">
+                <div class="answer-by">@${this.esc(a.creator_username)}</div>
+                <div class="answer-text">${this.esc(a.content)}</div>
+                <div class="answer-actions">
+                  <button class="vote-btn" onclick="App.vote(${a.id},1)" title="Beğen">▲</button>
+                  <span class="vote-score ${sc}">${a.vote_score}</span>
+                  <button class="vote-btn" onclick="App.vote(${a.id},-1)" title="Beğenme">▼</button>
+                  <button class="report-link" onclick="App.openReportModal('answer',${a.id})">raporla</button>
+                  ${canDel ? `<button class="report-link" style="color:var(--danger)" onclick="App.openDeleteModal('answer',${a.id})">sil</button>` : ''}
+                </div>
+              </div>`;
+            },
+
+            async submitAnswer(e, personId) {
+                e.preventDefault();
+                const input = document.getElementById('answer-input');
+                try {
+                    await this.api('POST', `/api/persons/${personId}/answers`, { content: input.value });
+                    input.value = '';
+                    this.toast('Yanıtınız başarıyla eklendi!');
+                    this.loadPerson(personId);
+                } catch (err) { this.toast(err.message, 'error'); }
+            },
+
+            async vote(answerId, value) {
+                if (!this.user) { this.navigate('login'); return; }
+                try {
+                    const data = await this.api('POST', `/api/answers/${answerId}/vote`, { value });
+                    this.toast(data.message);
+                    const parts = window.location.hash.slice(1).split('/');
+                    if (parts[0] === 'person' && parts[1]) this.loadPerson(parts[1]);
+                } catch (err) { this.toast(err.message, 'error'); }
+            },
+
+            handleImagePreview(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const area = document.getElementById('upload-area');
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    area.innerHTML = `<img src="${ev.target.result}" alt="Önizleme"><p style="font-size:12px;color:var(--text-muted);margin-top:6px">Değiştirmek için tıklayın</p>
+                <input type="file" id="create-image" accept="image/jpeg,image/png,image/webp,image/gif" onchange="App.handleImagePreview(event)">`;
+                };
+                reader.readAsDataURL(file);
+            },
+
+            async handleCreatePerson(e) {
+                e.preventDefault();
+                const btn = document.getElementById('create-btn');
+                btn.disabled = true;
+                btn.textContent = 'Oluşturuluyor...';
+                try {
+                    const name = document.getElementById('create-name').value;
+                    const description = document.getElementById('create-description').value;
+                    const isPublic = document.getElementById('create-public-figure').value === '1';
+                    const fileInput = document.getElementById('create-image');
+                    let imageUrl = null;
+
+                    if (fileInput?.files?.[0]) {
+                        const file = fileInput.files[0];
+                        if (file.size > 5 * 1024 * 1024) throw new Error('Dosya boyutu 5MB\'ı geçemez.');
+                        try {
+                            const upData = await this.api('POST', '/api/upload-url', { filename: file.name, content_type: file.type });
+                            await this.apiRaw('PUT', `/api/upload/${upData.key}`, file, file.type);
+                            imageUrl = `/api/images/${upData.key}`;
+                        } catch (ue) { console.warn('Resim yükleme hatası:', ue.message); }
+                    }
+
+                    const data = await this.api('POST', '/api/persons', { name, description, image_url: imageUrl, is_public_figure: isPublic });
+                    this.toast(data.message);
+                    document.getElementById('create-form').reset();
+                    const area = document.getElementById('upload-area');
+                    area.innerHTML = `<svg viewBox="0 0 24 24" style="width:32px;height:32px;stroke:var(--text-muted);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:4px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><p style="font-size:13px;color:var(--text-secondary)">Resim yüklemek için tıklayın</p><p style="font-size:11px;color:var(--text-muted)">JPEG, PNG, WebP, GIF — Maks. 5MB</p>
+                <input type="file" id="create-image" accept="image/jpeg,image/png,image/webp,image/gif" onchange="App.handleImagePreview(event)">`;
+                    this.navigate('home');
+                } catch (err) {
+                    this.showAlert('create-alert', err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Profili Oluştur';
+                }
+            },
+
+            async loadMyPosts() {
+                const list = document.getElementById('myposts-list');
+                list.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                try {
+                    const data = await this.api('GET', '/api/persons/mine');
+                    if (data.persons.length === 0) {
+                        list.innerHTML = '<div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><p>Henüz bir gönderi oluşturmadınız. Yeni bir parodi profili ekleyerek başlayın!</p></div>';
+                        return;
+                    }
+                    list.innerHTML = data.persons.map(p => {
+                        const badge = p.visibility_status === 'pending' ? '<span class="badge badge-pending">Bekliyor</span>'
+                            : p.visibility_status === 'hidden' ? '<span class="badge badge-hidden">Gizli</span>'
+                                : '<span class="badge badge-approved">Onaylı</span>';
+                        return `
+                  <div class="admin-item">
+                    <div class="admin-item-top">
+                      <div>
+                        <strong style="color:var(--link);cursor:pointer" onclick="App.navigate('person/${p.id}')">${this.esc(p.name)}</strong> ${badge}
+                        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description).substring(0, 120)}${p.description.length > 120 ? '...' : ''}</div>
+                        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">${this.formatDate(p.created_at)}</div>
+                      </div>
+                      <div class="admin-btns">
+                        <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
+                      </div>
+                    </div>
+                  </div>`;
+                    }).join('');
+                } catch (err) {
+                    list.innerHTML = `<div class="empty"><p>${err.message}</p></div>`;
+                }
+            },
+
+            openDeleteModal(type, id) {
+                this.deleteTarget = { type, id };
+                document.getElementById('delete-modal').classList.add('show');
+            },
+
+            closeDeleteModal() {
+                document.getElementById('delete-modal').classList.remove('show');
+                this.deleteTarget = null;
+            },
+
+            async confirmDelete() {
+                if (!this.deleteTarget) return;
+                const { type, id } = this.deleteTarget;
+                try {
+                    if (type === 'person') {
+                        if (this.user.role === 'admin') {
+                            await this.api('DELETE', `/api/admin/persons/${id}`);
+                        } else {
+                            await this.api('DELETE', `/api/persons/${id}`);
+                        }
+                        this.toast('Gönderi başarıyla kaldırıldı.');
+                    } else if (type === 'answer') {
+                        if (this.user.role === 'admin') {
+                            await this.api('DELETE', `/api/admin/answers/${id}`);
+                        } else {
+                            await this.api('DELETE', `/api/answers/${id}`);
+                        }
+                        this.toast('Yanıt başarıyla kaldırıldı.');
+                    }
+                    this.closeDeleteModal();
+                    if (this.currentPage === 'myposts') this.loadMyPosts();
+                    else if (this.currentPage === 'person') {
+                        const parts = window.location.hash.slice(1).split('/');
+                        if (type === 'person') this.navigate('home');
+                        else if (parts[1]) this.loadPerson(parts[1]);
+                    }
+                    else if (this.currentPage === 'admin') this.loadAdminPanel();
+                    else this.loadPersons();
+                } catch (err) {
+                    this.toast(err.message, 'error');
+                    this.closeDeleteModal();
+                }
+            },
+
+            openReportModal(type, id) {
+                if (!this.user) { this.navigate('login'); return; }
+                this.reportTarget = { type, id };
+                document.getElementById('report-reason').value = '';
+                document.getElementById('report-modal').classList.add('show');
+            },
+
+            closeReportModal() {
+                document.getElementById('report-modal').classList.remove('show');
+                this.reportTarget = null;
+            },
+
+            async submitReport() {
+                if (!this.reportTarget) return;
+                const reason = document.getElementById('report-reason').value;
+                if (reason.length < 5) { this.toast('Sebep en az 5 karakter olmalıdır.', 'error'); return; }
+                try {
+                    await this.api('POST', '/api/reports', { target_type: this.reportTarget.type, target_id: this.reportTarget.id, reason });
+                    this.toast('Raporunuz yöneticilere iletildi. Katkınız için teşekkürler.');
+                    this.closeReportModal();
+                } catch (err) { this.toast(err.message, 'error'); }
+            },
+
+            async loadAdminPanel() {
+                try {
+                    const stats = await this.api('GET', '/api/admin/stats');
+                    document.getElementById('admin-stats').innerHTML = `
+                <div class="stat-box"><div class="stat-num">${stats.total_users}</div><div class="stat-lbl">Kullanıcı</div></div>
+                <div class="stat-box"><div class="stat-num">${stats.total_persons}</div><div class="stat-lbl">Profil</div></div>
+                <div class="stat-box"><div class="stat-num">${stats.pending_persons}</div><div class="stat-lbl">Bekleyen</div></div>
+                <div class="stat-box"><div class="stat-num">${stats.pending_reports}</div><div class="stat-lbl">Rapor</div></div>
+              `;
+                    this.switchAdminTab('pending');
+                } catch (err) { this.toast(err.message, 'error'); }
+            },
+
+            async switchAdminTab(tab) {
+                document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.admin-tab[data-tab="${tab}"]`)?.classList.add('active');
+                const c = document.getElementById('admin-content');
+                c.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+                try {
+                    switch (tab) {
+                        case 'pending': {
+                            const d = await this.api('GET', '/api/admin/pending');
+                            if (!d.persons.length) { c.innerHTML = '<div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><p>Onay bekleyen profil bulunmuyor. Her şey yolunda!</p></div>'; return; }
+                            c.innerHTML = d.persons.map(p => `
+                    <div class="admin-item">
+                      <div class="admin-item-top">
+                        <div>
+                          <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
+                          <strong>${this.esc(p.name)}</strong> ${p.is_public_figure ? '<span class="badge badge-pending">Kamusal</span>' : ''}
+                          <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description)}</div>
+                        </div>
+                        <div class="admin-btns">
+                          <button class="btn btn-sm" style="background:var(--success);border-color:var(--success)" onclick="App.adminAction('approve',${p.id})">Onayla</button>
+                          <button class="btn btn-sm btn-secondary" onclick="App.adminAction('reject',${p.id})">Reddet</button>
+                          <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
+                        </div>
+                      </div>
+                    </div>
+                  `).join('');
+                            break;
+                        }
+                        case 'reports': {
+                            const d = await this.api('GET', '/api/admin/reports?status=pending');
+                            if (!d.reports.length) { c.innerHTML = '<div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><p>Bekleyen rapor bulunmuyor. Topluluk düzenli!</p></div>'; return; }
+                            c.innerHTML = d.reports.map(r => `
+                    <div class="admin-item">
+                      <div class="admin-item-top">
+                        <div>
+                          <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(r.reporter_username)} · ${this.formatDate(r.created_at)}</div>
+                          <div><strong>Tür:</strong> ${r.target_type === 'person' ? 'Profil' : 'Yanıt'} #${r.target_id}</div>
+                          <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(r.reason)}</div>
+                        </div>
+                        <div class="admin-btns">
+                          <button class="btn btn-sm" onclick="App.resolveReport(${r.id},'reviewed')">İncele</button>
+                          <button class="btn btn-sm btn-secondary" onclick="App.resolveReport(${r.id},'dismissed')">Reddet</button>
+                        </div>
+                      </div>
+                    </div>
+                  `).join('');
+                            break;
+                        }
+                        case 'users': {
+                            const d = await this.api('GET', '/api/admin/users');
+                            c.innerHTML = `<div style="display:flex;gap:4px;margin-bottom:0.75rem">
+                    <input type="text" class="form-input" id="admin-user-search" placeholder="Kullanıcı ara..." style="flex:1">
+                    <button class="btn btn-sm" onclick="App.searchAdminUsers()">Ara</button>
+                  </div>` + d.users.map(u => this.renderAdminUser(u)).join('');
+                            break;
+                        }
+                        case 'allposts': {
+                            const d = await this.api('GET', '/api/admin/allpersons');
+                            if (!d.persons.length) { c.innerHTML = '<div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><p>Platformda henüz hiçbir gönderi bulunmuyor.</p></div>'; return; }
+                            c.innerHTML = d.persons.map(p => {
+                                const badge = p.visibility_status === 'pending' ? '<span class="badge badge-pending">Bekliyor</span>'
+                                    : p.visibility_status === 'hidden' ? '<span class="badge badge-hidden">Gizli</span>'
+                                        : '<span class="badge badge-approved">Onaylı</span>';
+                                return `
+                      <div class="admin-item">
+                        <div class="admin-item-top">
+                          <div>
+                            <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
+                            <strong style="cursor:pointer;color:var(--link)" onclick="App.navigate('person/${p.id}')">${this.esc(p.name)}</strong> ${badge}
+                            <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description).substring(0, 100)}...</div>
+                          </div>
+                          <div class="admin-btns">
+                            <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
+                          </div>
+                        </div>
+                      </div>`;
+                            }).join('');
+                            break;
+                        }
+                    }
+                } catch (err) { c.innerHTML = `<div class="empty"><p>${err.message}</p></div>`; }
+            },
+
+            renderAdminUser(u) {
+                return `<div class="admin-item">
+              <div class="admin-item-top">
+                <div>
+                  <strong>@${this.esc(u.username)}</strong>
+                  <div style="font-size:11.5px;color:var(--text-muted)">Rol: ${u.role} · Durum: ${u.status} · ${this.formatDate(u.created_at)}</div>
+                </div>
+                <div class="admin-btns">
+                  ${u.status === 'active' ? `
+                    <button class="btn btn-sm btn-secondary" onclick="App.adminUserAction('shadow-ban',${u.id})">Gölge Ban</button>
+                    <button class="btn btn-sm btn-danger" onclick="App.adminUserAction('ban',${u.id})">Banla</button>
+                  ` : `<button class="btn btn-sm" onclick="App.adminUserAction('unban',${u.id})">Ban Kaldır</button>`}
+                </div>
+              </div>
+            </div>`;
+            },
+
+            async adminAction(action, personId) {
+                try {
+                    if (action === 'delete') await this.api('DELETE', `/api/admin/persons/${personId}`);
+                    else await this.api('POST', `/api/admin/persons/${personId}/${action}`);
+                    this.toast(action === 'approve' ? 'Profil başarıyla onaylandı.' : action === 'reject' ? 'Profil reddedildi.' : 'Gönderi kaldırıldı.');
+                    this.loadAdminPanel();
+                } catch (err) { this.toast(err.message, 'error'); }
+            },
+
+            async resolveReport(id, status) {
+                try {
+                    await this.api('PUT', `/api/admin/reports/${id}`, { status });
+                    this.toast('Rapor durumu güncellendi.');
+                    this.switchAdminTab('reports');
+                } catch (err) { this.toast(err.message, 'error'); }
+            },
+
+            async adminUserAction(action, userId) {
+                try {
+                    await this.api('POST', `/api/admin/users/${userId}/${action}`);
+                    this.toast('Kullanıcı işlemi başarıyla uygulandı.');
+                    this.switchAdminTab('users');
+                } catch (err) { this.toast(err.message, 'error'); }
+            },
+
+            async searchAdminUsers() {
+                const q = document.getElementById('admin-user-search')?.value || '';
+                try {
+                    const d = await this.api('GET', `/api/admin/users?q=${encodeURIComponent(q)}`);
+                    const c = document.getElementById('admin-content');
+                    const searchHtml = `<div style="display:flex;gap:4px;margin-bottom:0.75rem">
+                <input type="text" class="form-input" id="admin-user-search" placeholder="Kullanıcı ara..." value="${this.esc(q)}" style="flex:1">
+                <button class="btn btn-sm" onclick="App.searchAdminUsers()">Ara</button>
+              </div>`;
+                    c.innerHTML = searchHtml + d.users.map(u => this.renderAdminUser(u)).join('');
+                } catch (err) { this.toast(err.message, 'error'); }
+            },
+
+            esc(str) {
+                if (!str) return '';
+                const el = document.createElement('span');
+                el.textContent = str;
+                return el.innerHTML;
+            },
+
+            formatDate(d) {
+                if (!d) return '';
+                return new Date(d).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => App.init());
+        window.addEventListener('resize', () => App.updateMobileSearch());
+    </script>
+</body>
+
+</html>
