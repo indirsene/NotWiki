@@ -12,8 +12,12 @@
         content="Mizah amaçlı kullanıcı içerikli parodi profilleri. Gerçek bilgi kaynağı değildir.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://notwiki.pages.dev">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:image" content="favicon.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="favicon.png">
     <title>NotWiki — Parodi Bilgi Platformu</title>
+    <link rel="icon" type="image/png" href="favicon.png" sizes="48x48">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -916,6 +920,37 @@
             color: var(--text-muted);
         }
 
+        @media (max-width: 480px) {
+            .admin-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .admin-item-top {
+                flex-direction: column;
+            }
+
+            .admin-btns {
+                width: 100%;
+                margin-top: 10px;
+                justify-content: flex-start;
+            }
+
+            .admin-tab {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+        }
+
+        .admin-inspect-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 10px;
+            margin-top: 8px;
+            display: none;
+            border: 1px solid var(--border-light);
+            font-size: 13px;
+        }
+
         .admin-item {
             border: 1px solid var(--border-light);
             border-radius: var(--radius);
@@ -1404,7 +1439,7 @@
 
                             <div class="form-group">
                                 <label class="form-label" style="font-size:12.5px">Bu Kim? (Kısa Tanım)</label>
-                                <input type="text" class="form-input" id="create-who"
+                                <input type="text" class="form-input" id="create-who" required
                                     placeholder="Örn: Amerikalı girişimci" maxlength="50">
                             </div>
                             <div class="form-group">
@@ -2155,8 +2190,10 @@
                             this.toast('Resim yüklenemedi: ' + (ue.message || ue), 'error');
                             btn.disabled = false;
                             btn.textContent = 'Profili Yayınla';
-                            return; // STOP HERE
+                            return;
                         }
+                    } else {
+                        throw new Error('Lütfen bir profil resmi seçin.');
                     }
 
                     const data = await this.api('POST', '/api/persons', {
@@ -2306,17 +2343,24 @@
                             const d = await this.api('GET', '/api/admin/pending');
                             if (!d.persons.length) { c.innerHTML = '<div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><p>Onay bekleyen profil bulunmuyor. Her şey yolunda!</p></div>'; return; }
                             c.innerHTML = d.persons.map(p => `
-            <div class="admin-item">
+            <div class="admin-item" id="admin-pending-${p.id}">
               <div class="admin-item-top">
-                <div>
+                <div style="flex:1">
                   <div style="font-size:11.5px;color:var(--text-muted)">@${this.esc(p.creator_username)} · ${this.formatDate(p.created_at)}</div>
-                  <strong>${this.esc(p.name)}</strong> ${p.is_public_figure ? '<span class="badge badge-pending">Kamusal</span>' : ''}
-                  <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description)}</div>
+                  <strong style="cursor:pointer;color:var(--link)" onclick="this.parentElement.parentElement.nextElementSibling.style.display = this.parentElement.parentElement.nextElementSibling.style.display === 'block' ? 'none' : 'block'">${this.esc(p.name)}</strong> ${p.is_public_figure ? '<span class="badge badge-pending">Kamusal</span>' : ''}
+                  <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(p.description).substring(0, 80)}...</div>
                 </div>
                 <div class="admin-btns">
                   <button class="btn btn-sm" style="background:var(--success);border-color:var(--success)" onclick="App.adminAction('approve',${p.id})">Onayla</button>
                   <button class="btn btn-sm btn-secondary" onclick="App.adminAction('reject',${p.id})">Reddet</button>
                   <button class="btn btn-sm btn-danger" onclick="App.openDeleteModal('person',${p.id})">Sil</button>
+                </div>
+              </div>
+              <div class="admin-inspect-card">
+                ${p.image_url ? `<img src="${p.image_url}" style="max-width:100px;border-radius:4px;float:left;margin:0 10px 5px 0">` : ''}
+                <p><strong>Açıklama:</strong> ${this.esc(p.description)}</p>
+                <div style="clear:both;margin-top:8px;padding-top:8px;border-top:1px solid var(--border-light)">
+                  <small>Detaylı görünüm için isme tıklayın veya <a href="#person/${p.id}">buraya gidin</a></small>
                 </div>
               </div>
             </div>
@@ -2334,8 +2378,8 @@
                   <div><strong>Tür:</strong> ${r.target_type === 'person' ? 'Profil' : 'Yanıt'} #${r.target_id}</div>
                   <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">${this.esc(r.reason)}</div>
                 </div>
-                <div class="admin-btns">
-                  <button class="btn btn-sm" onclick="App.resolveReport(${r.id},'reviewed')">İncele</button>
+                 <div class="admin-btns">
+                  <button class="btn btn-sm" onclick="App.resolveReport(${r.id},'reviewed','${r.target_type}',${r.person_id})">İncele</button>
                   <button class="btn btn-sm btn-secondary" onclick="App.resolveReport(${r.id},'dismissed')">Reddet</button>
                 </div>
               </div>
@@ -2404,11 +2448,15 @@
                 } catch (err) { this.toast(err.message, 'error'); }
             },
 
-            async resolveReport(id, status) {
+            async resolveReport(id, status, targetType = null, targetId = null) {
                 try {
                     await this.api('PUT', `/api/admin/reports/${id}`, { status });
                     this.toast('Rapor durumu güncellendi.');
-                    this.switchAdminTab('reports');
+                    if (status === 'reviewed' && targetId) {
+                        this.navigate(`person/${targetId}`);
+                    } else {
+                        this.switchAdminTab('reports');
+                    }
                 } catch (err) { this.toast(err.message, 'error'); }
             },
 
@@ -2442,7 +2490,19 @@
 
             formatDate(d) {
                 if (!d) return '';
-                return new Date(d).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' });
+                let iso = d;
+                if (d.includes(' ') && !d.includes('T')) iso = d.replace(' ', 'T') + 'Z';
+                else if (!d.endsWith('Z') && !d.includes('+')) iso = d + 'Z';
+
+                const date = new Date(iso);
+                const now = new Date();
+                const diff = (now - date) / 1000;
+
+                if (diff < 60) return 'Az önce';
+                if (diff < 3600) return Math.floor(diff / 60) + ' dk önce';
+                if (diff < 86400) return Math.floor(diff / 3600) + ' sa önce';
+
+                return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
             }
         };
 
